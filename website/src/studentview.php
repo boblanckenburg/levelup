@@ -2,7 +2,7 @@
     
     //default values
     $class = 'A';
-    $level = 1;
+    $level = 0;
     $point = 0;
     $daystreak = 0;
     $classposition = 0;

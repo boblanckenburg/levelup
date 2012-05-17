@@ -2,6 +2,7 @@
 .container {
 	margin: 0px auto 0px auto;
 	width:900px;
+	display: block;
 }
 
 .streaks, .actionbar {
