@@ -1,0 +1,356 @@
+/*
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ */
+
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+/*
+bg-gray: #2e3138;
+bg-light-gray: #454954;
+bg-blue: #49a2e4;
+neon-blue: #01d1ff;
+*/
+
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+	text-transform: uppercase;
+	margin: 0px;
+	background: #2e3138;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+@font-face {
+    font-family: chunkfivefont;
+    src: url(Chunkfive.otf);
+}
+
+
+body {
+    font-family: chunkfivefont;
+    color: white;
+    height:100%;
+	margin: 0px;
+}
+
+.dashboard, .content
+{
+	height:100%;
+	width:100%;
+}
+
+.header
+{
+    background: #454953;
+	width: 100%;
+	height:80px;
+	background-image: url('../img/dashboardlogo.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background: #454954;
+}
+
+.menu
+{
+    background: #2e3138;
+	width:790px;
+	height:50px;
+	margin: 10px auto 5px auto;
+	background: #454954;
+	border-radius: 12px;
+}
+
+.menu a
+{
+	display: block;
+	float:left;
+	height: 35px;
+	width: 200px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+.menu a:hover
+{
+	color: #49a2e4;
+}
+
+.content {
+	width:800px;
+	height:100%;
+	margin:0px auto 0px auto;
+}
+
+.streaks, .actionbar {
+	width:230px;
+	height:100%;
+	float:left;
+	background: #454954;
+	border-radius: 12px;
+	margin:5px;
+}
+
+.streakitem
+{
+	width: 230px;
+	height: 100px;
+	margin: 0px auto 0px auto;
+}
+
+.streakitem .score
+{
+	font-size: 2em;
+	color: #00d1ff;
+	float:left;
+	width: 80px;
+	height: 80px;
+	padding-top: 24px;
+	text-align: center;
+}
+
+.streakitem .arrow
+{
+	float: left;
+	width: 88px;
+	height: 36px;
+
+	background-image: url('../img/streakarrow.png');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.streakitem .name
+{
+	font-size: 0.8em;
+	width: 88px;
+	padding-left: 10px
+	color: white;
+}
+
+.streakitem #day
+{
+	background-image: url('../img/streakday.png');
+	background-repeat: no-repeat;
+}
+
+.streakitem #class
+{
+	background-image: url('../img/streakclass.png');
+	background-repeat: no-repeat;
+}
+
+.streakitem #indv
+{
+	background-image: url('../img/streakindv.png');
+	background-repeat: no-repeat;
+}
+
+.levelcounter
+{
+	width:310px;
+	height:100%;
+	float:left;
+	
+	background-image: url('../img/levelcounterbg.png');
+	background-repeat: no-repeat;
+	background-position: center top;
+	
+	background: #454954;
+	border-radius: 12px;
+	margin:5px;
+}
+
+.levelcounter .score
+{
+	color: #49a3e3;
+	margin: 80px auto 0px auto;
+	display: block;
+	text-align: center;
+	font-size: 3.6em;
+}
+
+.actionbar a
+{
+	display: block;
+	float:left;
+	height: 35px;
+	width: 100%;
+	text-align: center;
+	padding-top: 25px;
+	font-size: 1em;
+}
+
+.actionbar a:hover
+{
+	color: #49a3e3;
+}
+
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+/*
+ * Hide visually and from screen readers: h5bp.com/u
+ */
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers: h5bp.com/v
+ */
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/*
+ * Extends the .visuallyhidden class to allow the element to be focusable
+ * when navigated to via the keyboard: h5bp.com/p
+ */
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+    visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group; /* h5bp.com/t */
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

@@ -1,0 +1,3 @@
+
+document.getElementById("page").style.height="100%";
+alert(document.getElementById("page").style.height);
