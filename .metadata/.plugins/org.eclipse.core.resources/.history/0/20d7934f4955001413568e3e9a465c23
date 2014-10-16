@@ -1,0 +1,12 @@
+<?php
+
+	$studentlist = "";
+	$studentlist .= "<div class=\"studentfield\">Jan Janssen</div>";
+	$studentlist .= "<div class=\"studentfield\">Karel Korthaar</div>";
+	$studentlist = "<div class=\"studentfield\">Piet Paulusma</div>";
+	$studentlist = "<div class=\"studentfield\">Fred Fopneus</div>";
+	
+	$site = str_replace( "{students}", $studentlist, $site );
+
+
+?>

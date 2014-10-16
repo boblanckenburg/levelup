@@ -104,13 +104,15 @@ body {
 	border-radius: 12px;
 }
 
-.menu a
+.menu a, a:visited
 {
 	display: block;
 	float:left;
 	height: 35px;
 	text-align: center;
 	padding: 15px 0px 0px 30px;
+	text-decoration: none;
+	color: white;
 }
 
 .menu a:hover

@@ -1,0 +1,16 @@
+<?php
+
+	$index_file = "index.html";
+	$content_file = $_GET["page"] . ".html";
+	$name = "Jos van Egmond";
+	
+	$site = file_get_contents( $index_file );
+	$content = file_get_contents( $content_file );
+	
+	$site = str_replace( "{name}", $name, $site );
+	$site = str_replace( "{content}", $content, $site );
+	
+	include $content_file . ".php";
+	
+	echo $site;
+?>

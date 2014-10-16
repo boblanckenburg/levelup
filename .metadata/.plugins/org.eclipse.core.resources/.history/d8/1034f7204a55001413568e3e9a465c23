@@ -1,0 +1,14 @@
+
+<div class="content">
+	
+	<section class="students">
+		<h2>Studenten</h2>
+		{students}
+	</section>
+	
+	<section class="checks">
+		<h2>Aanwezig</h2>
+		{checks}
+	</section>
+	
+</div>

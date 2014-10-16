@@ -1,0 +1,16 @@
+
+function changeProgress()
+{
+	var percentage = Math.random() * 100;
+	
+	var progress_fill = document.getElementById("levelcounter-progressbar");
+	var percentage = document.getElementById("levelcounter-percentage");
+	
+	percentage.innerHTML = percentage + "%";
+	progress_fill.style.width = percentage + "%";
+	
+	alert( "percentage " + percentage );
+}
+
+changeProgress();
+

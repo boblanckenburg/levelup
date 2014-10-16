@@ -1,0 +1,8 @@
+<?php
+
+
+	$studentlist .= "<div class=\"studentfield light\">Fred Fopneus</div>";
+	
+	$site = str_replace( "{students}", $studentlist, $site );
+
+?>

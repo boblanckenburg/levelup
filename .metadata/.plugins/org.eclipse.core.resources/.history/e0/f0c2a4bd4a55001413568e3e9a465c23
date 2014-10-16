@@ -1,0 +1,38 @@
+
+.students, .checks {
+	width:410px;
+	height:100%;
+	float:left;
+	background: #454954;
+	border-radius: 12px;
+	margin:5px;
+	padding: 40px 15px 15px 15px;
+}
+
+.light
+{
+	background-color: #555964;
+}
+
+.studentfield
+{
+	width: 100%;
+	height: 30px;
+	margin: 5px;
+}
+
+.checkfield
+{
+	width: 100%;
+	height: 30px;
+	padding: 5px;
+}
+
+.sectiontitle
+{
+	display:block;
+	font-size: 1.5em;
+	text-align: center;
+	width: 100%;
+	height:20px;
+}

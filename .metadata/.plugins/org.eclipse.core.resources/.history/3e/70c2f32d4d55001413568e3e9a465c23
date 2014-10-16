@@ -1,0 +1,16 @@
+
+function changeProgress()
+{
+	var percentage = Math.random() * 100;
+	
+	var progress_fill = document.getElementById("progress_fill");
+	var percentage = document.getElementById("progress_fill");
+	
+	percentage.innerHTML = percentage + "$";
+	progress_fill.style.width = percentage;
+	
+	alert( percentage );
+}
+
+changeProgress();
+
