@@ -216,9 +216,6 @@ body {
 }
 
 
-.blue span {
-    background-color: #49a2e4;   
-}
 
 .progress-bar {
 	display: block;
@@ -229,39 +226,53 @@ body {
     margin: 50px 40px 0px 40px;
 }
 
-.progress-bar span {
-    display: inline-block;
-    height: 100%;
+.progress-fill {
+    height: 15px;
+    width: 65%;
+    background-color: #49a2e4;
+    margin: 0px -7px 0px -7px;
 }
 
-.progress-bar .prevlevel {
-	display: inline-block;
-	float: left;
+.prevlevel {
+	float:left;
 	width: 30px;
 	height: 30px;
 	border-radius:15px;
 	background-color: white;
-	margin-top: -8px;
-	margin-left:-30px;
+	margin: -23px 0px 0px -15px;
 	
 	text-align: center;
-	font-size:1.5em;
+	font-size: 1.5em;
     color: #49a2e4;
 }
 
-.progress-bar .nextlevel {
-	display: inline-block;
+.nextlevel {
 	float:right;
 	width: 30px;
 	height: 30px;
 	border-radius:15px;
 	background-color: white;
-	margin-top: -8px;
-	margin-right:-30px;
-	
+	margin: -23px 0px 0px 15px;
+
 	text-align: center;
-	font-size:1.5em;
+	font-size: 1.5em;
     color: #49a2e4;
+}
+
+.percentage
+{
+	margin: 0px auto 0px auto;
+	text-align: center;
+	font-size: 1em;
+	
+	width: 60px;
+	height: 30px;
+	
+	color: white;
+	margin-top: 15px;
+	padding: 12px 4px 4px 4px;
+	background-color: #22252c;
+	border-radius:15px;
 }
 
 

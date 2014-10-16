@@ -1,2 +1,0 @@
-
-document.getElementById("page").style.height=window.innerHeight+"px";

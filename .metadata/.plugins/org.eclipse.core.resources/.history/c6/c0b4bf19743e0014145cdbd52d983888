@@ -1,3 +1,0 @@
-
-//set up height of the html element
-document.getElementById("html").style.height=window.innerHeight+"px";

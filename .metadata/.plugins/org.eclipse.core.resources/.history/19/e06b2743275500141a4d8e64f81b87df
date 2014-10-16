@@ -1,0 +1,469 @@
+/*
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ */
+
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+/*
+bg-gray: #2e3138;
+bg-light-gray: #454954;
+bg-blue: #49a2e4;
+neon-blue: #01d1ff;
+*/
+
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+	margin: 0px;
+	background: #2e3138;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+@font-face {
+    font-family: chunkfivefont;
+    src: url(Chunkfive.otf);
+}
+
+
+body {
+    font-family: chunkfivefont;
+    color: white;
+    height:100%;
+	margin: 0px;
+}
+
+.dashboard, .content
+{
+	height:100%;
+	width:100%;
+}
+
+.header
+{
+    background: #454953;
+	width: 890px;
+	height:80px;
+	margin: 0px auto 0px auto;
+	
+	background-image: url('../img/dashboardlogo.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: #454954;
+}
+
+.header #welcome
+{
+	width: 200px;
+	float:right;
+	color: white;
+	margin 0px auto 0px auto;
+	padding: 0px 10px 0px 0px;
+}
+
+.header #welcome p
+{
+	float: right;
+	display: block;
+	font-size: 0.7em;
+	margin: 10px 10px 5px 0px;
+}
+
+.header #welcome a
+{
+	float: right;
+	display: block;
+	height:20px;
+	width: 100px;
+	text-align: center;
+	font-size: 0.8em;
+	color: white;
+	text-decoration: none;
+	padding:5px 20px 5px 20px;
+	margin: 0px 10px 0px 0px;
+	
+	background-color: #49a2e4;
+	border-radius: 6px;
+}
+
+.menu
+{
+    background: #2e3138;
+	width:890px;
+	height:50px;
+	margin: 10px auto 5px auto;
+	background: #454954;
+	border-radius: 12px;
+}
+
+.menu a
+{
+	display: block;
+	float:left;
+	height: 35px;
+	text-align: center;
+	padding: 15px 0px 0px 30px;
+}
+
+.menu a:hover
+{
+	color: #49a2e4;
+}
+
+.content {
+	width:900px;
+	height:400px;
+	margin:0px auto 0px auto;
+}
+
+.streaks, .actionbar {
+	width:200px;
+	height:85%;
+	float:left;
+	background: #454954;
+	border-radius: 12px;
+	margin:5px;
+	padding: 40px 15px 15px 15px;
+}
+
+.streakitem
+{
+	float: left;
+	margin: 0px auto 0px auto;
+}
+
+.streakitem .score
+{
+	font-size: 2em;
+	color: #00d1ff;
+	float:left;
+	width: 80px;
+	height: 80px;
+	padding-top: 19px;
+	text-align: center;
+}
+
+.streakitem .arrow
+{
+	float: left;
+	width: 88px;
+	height: 36px;
+	padding: 50px 0px 0px 30px;
+
+	background-image: url('../img/streakarrow.png');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.streakitem .name
+{
+	margin-top: -33px;
+	margin-left: -3px;
+	padding: 10px;
+	font-size: 0.75em;
+	color: white;
+}
+
+.streakitem #day
+{
+	background-image: url('../img/streakday.png');
+	background-repeat: no-repeat;
+}
+
+.streakitem #class
+{
+	background-image: url('../img/streakclass.png');
+	background-repeat: no-repeat;
+}
+
+.streakitem #indv
+{
+	background-image: url('../img/streakindv.png');
+	background-repeat: no-repeat;
+}
+
+.levelcounter
+{
+	width:380px;
+	height:100%;
+	float:left;
+	
+	background-color: #454954;
+	
+	border-radius: 12px;
+	margin:5px;
+	padding: 40px 15px 15px 15px;
+}
+
+.levelcounter .image
+{
+	display:block;
+	float: left;
+	width: 380px;
+	height: 239px;
+	background-image: url('../img/levelcounterbg.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 0px auto 0px auto;
+}
+
+
+
+.progress-bar {
+	display: block;
+	float: left;
+    background-color: #22252c;
+    height: 15px;
+    width: 300px;
+    padding:0px 5px 0px 5px;
+    margin: 50px 40px 0px 40px;
+}
+
+.progress-fill {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    background-color: #49a2e4;   
+}
+
+.prevlevel {
+	display: inline-block;
+	float: left;
+	width: 30px;
+	height: 30px;
+	border-radius:15px;
+	background-color: white;
+	margin-top: -8px;
+	margin-left:-30px;
+	
+	text-align: center;
+	font-size: 1.5em;
+    color: #49a2e4;
+}
+
+.nextlevel {
+	display: inline-block;
+	float:right;
+	width: 30px;
+	height: 30px;
+	border-radius:15px;
+	background-color: white;
+	margin-top: -8px;
+	
+	text-align: center;
+	font-size: 1.5em;
+    color: #49a2e4;
+}
+
+.percentage
+{
+	margin: 0px auto 0px auto;
+	text-align: center;
+	font-size: 1em;
+	
+	width: 60px;
+	height: 20px;
+	
+	color: white;
+	padding: 12px;
+	background-color: #22252c;
+	border-radius:15px;
+}
+
+
+.levelcounter .score
+{
+	margin: 80px auto 0px auto;
+	color: #49a3e3;
+	text-align: center;
+	font-size: 3.6em;
+}
+
+.actionbar a
+{
+	display: block;
+	float:left;
+	height: 35px;
+	width: 100%;
+	text-align: center;
+	font-size: 1em;
+	padding-top:15px;
+	
+	background-color: #49a2e4;
+	border-radius: 6px;
+	margin-bottom: 10px;
+}
+
+.actionbar a:hover
+{
+	font-size:1.1em;
+}
+
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+/*
+ * Hide visually and from screen readers: h5bp.com/u
+ */
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers: h5bp.com/v
+ */
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/*
+ * Extends the .visuallyhidden class to allow the element to be focusable
+ * when navigated to via the keyboard: h5bp.com/p
+ */
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+    visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group; /* h5bp.com/t */
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

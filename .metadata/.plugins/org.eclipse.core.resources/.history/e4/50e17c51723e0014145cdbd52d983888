@@ -1,3 +1,0 @@
-
-document.getElementById("page").style.height=window.innerHeight;
-alert(document.getElementById("page").style.height);
