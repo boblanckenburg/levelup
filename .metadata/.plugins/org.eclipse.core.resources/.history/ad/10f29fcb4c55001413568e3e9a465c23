@@ -1,2 +1,0 @@
-
-var percentage = Math.random() * 100;

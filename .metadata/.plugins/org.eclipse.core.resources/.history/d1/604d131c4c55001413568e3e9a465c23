@@ -1,5 +1,0 @@
-   
-   var progress_fill = document.getElementById("progress_fill");
-   var percentage = document.getElementById("progress_fill");
-   return element.tag;
-   

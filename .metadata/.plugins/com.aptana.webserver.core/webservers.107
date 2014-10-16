@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<servers>
-<server type="com.aptana.webserver.external">
-<name>lighttpd</name>
-<baseURL>http://localhost:8080/websites/LevelUp/website/src/index.php</baseURL>
-<documentRoot>file:/var/www/websites/LevelUp/website/src</documentRoot>
-<startCommand>lighttpd -f /etc/lighttpd/lighttpd.conf</startCommand>
-</server>
-</servers>

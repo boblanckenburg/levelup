@@ -1,3 +1,0 @@
-FIND_BAR_DECORATOR_FIND_ENTRIES=\#\n\#Thu Oct 16 17\:32\:45 CEST 2014\n3\=no-js\n2\=capit\n1\=\\n\\t$studentlist \\\= "";\\n\\t$studentlist .\\\= "<div class\\\=\\\\"studentfield\\\\">Jan Janssen</div>";\\n\\t$studentlist .\\\= "<div class\\\=\\\\"studentfield\\\\">Karel Korthaar</div>";\\n\\t$studentlist .\\\= "<div class\\\=\\\\"studentfield\\\\">Piet Paulusma</div>";\\n\\t$studentlist .\\\= "<div class\\\=\\\\"studentfield\\\\">Fred Fopneus</div>";\\n\\t\\n\\t$site \\\= str_replace( "{students}", $studentlist, $site );\\n\n0\=studentlist\n
-FIND_BAR_DECORATOR_REPLACE_ENTRIES=\#\n\#Thu Oct 16 17\:32\:45 CEST 2014\n0\=checkboxlist\n
-eclipse.preferences.version=1

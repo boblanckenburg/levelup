@@ -1,4 +1,0 @@
-   
-   var element = document.getElementById("progress_fill");
-   return element.tag;
-   
