@@ -1,0 +1,10 @@
+<?
+	$header = "header.html";
+	$content = "studentview.html";
+	$footer = "footer.html";
+
+	echo file_get_contents( $header );
+	echo file_get_contents( $content );
+	echo file_get_contents( $footer );
+
+?>

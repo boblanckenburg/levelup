@@ -30,7 +30,7 @@
 				<a href="./docentview.html">Docent dashboard</a>
 			</section>
 			<div class="content">
-				{content}
+				
 			</div>
 		</div>
     </body>

@@ -1,0 +1,8 @@
+<?
+	$index = "index.html";
+	$content = "studentview.html";
+
+	$index = file_get_contents( $index );
+	$content = file_get_contents( $content );
+
+?>

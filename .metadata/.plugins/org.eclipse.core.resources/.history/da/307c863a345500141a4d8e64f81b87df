@@ -9,7 +9,7 @@
 
         <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/docentview.css">
         <script src="js/main.js"></script>
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
@@ -26,11 +26,17 @@
 				</div>
 			</section>
 			<section class="menu">
-				<a href="./index.html">Overview</a>
-				<a href="./docentview.html">Docent dashboard</a>
+				<a>Admin</a>
+				<a>Docent dashboard</a>
 			</section>
+			
 			<div class="content">
-				{content}
+				
+				<section class="classes">
+				</section>
+				
+				<section class="checks">
+				</section>
 			</div>
 		</div>
     </body>
