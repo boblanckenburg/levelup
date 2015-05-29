@@ -1,14 +1,34 @@
 
 <div class="content">
-	
-	<section class="students">
-		<span class="sectiontitle">Studenten</span>
-		{students}
+
+	<section class="sectionselection">
+		<table>
+			<tr>
+				<td>Klassen</td>
+				<td>Weken</td>
+			</tr>
+			<tr>
+				<td>{classes}</td>
+				<td>{weeks}</td>
+			</tr>
+		</table>
+		
+		<form>
+			<table>
+				<tr>
+					<td>Naam</td>
+					<td>Aanwezigheid</td>
+					<td>Huiswerk</td>
+					<td>Codecademy</td>
+				</tr>
+				
+				{studentrows}
+				
+			</table>
+		</form>		
+		
 	</section>
 	
-	<section class="checks">
-		<span class="sectiontitle">Aanwezigheid</span>
-		{checks}
-	</section>
+	<div id="serverresponse"></div>
 	
 </div>

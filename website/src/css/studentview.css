@@ -1,0 +1,182 @@
+
+.streaks, .actionbar {
+	width:200px;
+	height:85%;
+	float:left;
+	background: #454954;
+	border-radius: 12px;
+	margin:5px;
+	padding: 40px 15px 15px 15px;
+}
+
+.streakitem
+{
+	float: left;
+	margin: 0px auto 0px auto;
+}
+
+.streakitem .score
+{
+	font-size: 2em;
+	color: #00d1ff;
+	float:left;
+	width: 80px;
+	height: 80px;
+	padding-top: 19px;
+	text-align: center;
+}
+
+.streakitem .arrow
+{
+	float: left;
+	width: 88px;
+	height: 36px;
+	padding: 50px 0px 0px 30px;
+
+	background-image: url('../img/streakarrow.png');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.streakitem .name
+{
+	margin-top: -33px;
+	margin-left: -3px;
+	padding: 10px;
+	font-size: 0.75em;
+	color: white;
+}
+
+.streakitem #day
+{
+	background-image: url('../img/streakday.png');
+	background-repeat: no-repeat;
+}
+
+.streakitem #class
+{
+	background-image: url('../img/streakclass.png');
+	background-repeat: no-repeat;
+}
+
+.streakitem #indv
+{
+	background-image: url('../img/streakindv.png');
+	background-repeat: no-repeat;
+}
+
+.levelcounter
+{
+	width:380px;
+	height:370px;
+	float:left;
+	
+	background-color: #454954;
+	
+	border-radius: 12px;
+	margin:5px;
+	padding: 40px 15px 15px 15px;
+}
+
+.levelcounter .image
+{
+	display:block;
+	float: left;
+	width: 380px;
+	height: 239px;
+	background-image: url('../img/levelcounterbg.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 0px auto 0px auto;
+}
+
+
+
+.progress-bar {
+	display: block;
+	float: left;
+    background-color: #22252c;
+    height: 15px;
+    width: 300px;
+    margin: 50px 40px 0px 40px;
+}
+
+.progress-fill {
+    height: 15px;
+    width: 65%;
+    background-color: #49a2e4;
+    margin: 0px -7px 0px -7px;
+}
+
+.prevlevel {
+	float:left;
+	width: 30px;
+	height: 30px;
+	border-radius:15px;
+	background-color: white;
+	margin: -23px 0px 0px -17px;
+	
+	text-align: center;
+	font-size: 1.5em;
+    color: #49a2e4;
+}
+
+.nextlevel {
+	float:right;
+	width: 30px;
+	height: 30px;
+	border-radius:15px;
+	background-color: white;
+	margin: -23px -2px 0px 15px;
+
+	text-align: center;
+	font-size: 1.5em;
+    color: #49a2e4;
+}
+
+.percentage
+{
+	margin: 0px auto 0px auto;
+	text-align: center;
+	font-size: 1em;
+	
+	width: 60px;
+	height: 30px;
+	
+	color: white;
+	margin-top: 15px;
+	padding: 12px 4px 4px 4px;
+	background-color: #22252c;
+	border-radius:15px;
+}
+
+
+.levelcounter .score
+{
+	margin: 80px auto 0px auto;
+	color: #49a3e3;
+	text-align: center;
+	font-size: 3.6em;
+}
+
+.actionbar a
+{
+	display: block;
+	float:left;
+	height: 35px;
+	width: 100%;
+	text-align: center;
+	font-size: 1em;
+	padding-top:15px;
+	color: white;
+	text-decoration: none;
+	
+	background-color: #49a2e4;
+	border-radius: 6px;
+	margin-bottom: 10px;
+}
+
+.actionbar a:hover
+{
+	font-size:1.1em;
+}

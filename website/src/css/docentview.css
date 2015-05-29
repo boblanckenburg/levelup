@@ -1,6 +1,74 @@
 
-.students, .checks {
-	width:410px;
+input[type=submit]
+{
+	float: right;
+	display: block;
+	text-align: center;
+	color: white;
+	padding:5px 20px 5px 20px;
+	margin: 0px 10px 0px 0px;
+	font-family: inherit;
+	font-size: 1.0em;
+	background-color: #49a2e4;
+	border-radius: 6px;
+	border-style: none;
+}
+
+table {
+	padding-top: 30px;
+}
+
+td {
+	padding-left: 30px;
+}
+
+.paging
+{
+	float:right;
+	display:block;
+	padding-right: 20px;
+}
+
+.pagenumberlight
+{
+	float:left;
+	display:inline;
+}
+
+.pagenumberlight a
+{
+	text-decoration: none;
+	color: white;
+}
+
+.pagenumberblue
+{
+	float:left;
+	display:inline;
+}
+
+.pagenumberblue a
+{
+	text-decoration: none;
+	color: #00d1ff;
+}
+
+.button {
+	float:left;
+	display:block;
+	background-color: #454954;
+	margin:2px;
+	padding:5px 15px 5px 15px;
+	border-radius: 10px;
+	color: #fff;
+}
+
+.button #selected {
+	background-color: #49a2e4;
+}
+
+.students {
+	width:200px;
 	height:100%;
 	float:left;
 	background: #454954;
@@ -9,13 +77,36 @@
 	padding: 40px 15px 15px 15px;
 }
 
-.sectiontitle
-{
+.weektabs {
+	width:620px;
+	height:20px;
+	float:left;
 	display:block;
+	background: #454954;
+	border-radius: 12px;
+	margin:5px;
+	padding: 0px 15px 0px 15px;
+}
+
+.subjectsection {
+	width:100%;
+	height:100%;
+	float:left;
+	display:block;
+	background: #454954;
+	border-radius: 12px;
+	margin:5px;
+	padding: 40px 15px 15px 15px;
+}
+
+.subjectcolumn
+{
 	font-size: 1.5em;
 	text-align: center;
-	width: 100%;
-	height:20px;
+	width: 30%;
+	height:100%;
+	float: left;
+	display:block;
 	
 	margin-bottom: 20px;
 }
@@ -26,18 +117,64 @@
 	background-color: #555964;
 }
 
-.studentfield
+.studentcolumn
 {
-	width: 100%;
-	height: 30px;
-	padding: 5px 0px 0px 5px;
-	margin-top: -5px;
+	float:left;
+	display:block;
+	width: 90%;
+	padding: 10px 0px 10px 0px;
+	text-decoration: none;
 }
 
-.checkfield
+.presencecolumn
 {
+	float:left;
+	display:block;
+	width: 30%;
+	padding: 10px 0px 10px 0px;
+	text-decoration: none;
+}
+
+.studentfield-even
+{
+	display:block;
+	float:left;
 	width: 100%;
-	height: 30px;
-	padding: 5px 0px 0px 5px;
-	margin-top: -5px;
+	margin: 7px 0px 2px 0px;
+	padding: 2px 0px 0px 0px;
+	background: #454954;
+	font-size: 1.0em;
+}
+
+.presencefield-even
+{
+	display:block;
+	float:left;
+	width: 100%;
+	margin:4px 0px 3px 0px;
+	padding:0px 0px 0px 0px;
+	background: #454954;
+	font-size: 1.0em;
+}
+
+.studentfield-odd
+{
+	display:block;
+	float:left;
+	width: 100%;
+	margin: 7px 0px 2px 0px;
+	padding: 2px 0px 0px 0px;
+	background: #555964;
+	font-size: 1.0em;
+}
+
+.presencefield-odd
+{
+	display:block;
+	float:left;
+	width: 100%;
+	margin:4px 0px 3px 0px;
+	padding:0px 0px 0px 0px;
+	background: #555964;
+	font-size: 1.0em;
 }

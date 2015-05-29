@@ -1,0 +1,124 @@
+    function create_checkbox_list( $studentnames, $presencedates )
+    {
+        if( isset( $_GET['pagenumber'] ) ) { $pagenumber = $_GET['pagenumber']; }
+        else { $pagenumber = 1; }
+        
+        $fieldcount = 0;
+        while( $fieldcount < ($pagenumber-1) * 3 ) { $row = mysql_fetch_assoc( $presencedates ); $fieldcount++; }
+        
+        $fieldcount = 0;
+        while( $row = mysql_fetch_assoc( $presencedates ) )
+        {
+            if( $fieldcount < 2 )
+            {
+                //list all the checkboxes per date in columns
+                $checkboxlist .= "<div class=\"presencecolumn\" title=\"" . $row['date'] . "\">";
+                $checkboxlist .= "<div class=\"presencefield-even\">Les " . ($fieldcount+1+($pagenumber-1)*2) . "</div>";
+                $even = true;
+                foreach( $studentnames as $studentname )
+                {
+                    if( $even == true ) {
+                        $evenodd = "-even";
+                        $even = false;
+                    }
+                    else {
+                        $evenodd = "-odd";
+                        $even = true;
+                    }
+                    
+                    $result = mysql_query("SELECT present FROM presences
+                                                         WHERE student_name = \"" . $studentname . "\"
+                                                           AND date = \"" . $row['date'] . "\";");
+                                                           
+                    $checked = (mysql_result( $result, 0 ) == "1") ? "checked" : "";
+                                                           
+                    $checkboxlist .= "<div class=\"presencefield".$evenodd."\"><input id=\"". $studentname . "_" . ($fieldcount+($pagenumber-1)*10) ."\" 
+                                             type=\"checkbox\"
+                                             onChange=\"updateStudent('".$studentname."','".$row['date']."','". $studentname . "_" . ($fieldcount+($pagenumber-1)*10) ."')\"
+                                             " . $checked . " >
+                                      </input></div>";
+                }
+                
+                $checkboxlist .= "</div>";
+    
+                $fieldcount++;
+            }
+        }
+        
+        $checkboxlist .= "</table>";
+        return $checkboxlist;
+    }
+
+    function create_paging( $presencedates )
+    {
+        //get and count all the presencedates
+        $pagingcount = (int)( mysql_num_rows( $presencedates ) / 2   ) + 1;
+        $uri = "http://".$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI];
+        $parts = parse_url($uri);
+        $queryParams = array();
+        parse_str($parts['query'], $queryParams);
+        unset($queryParams['pagenumber']);
+        $queryString = http_build_query($queryParams);
+        $uri = $parts['path'] . '?' . $queryString;
+        
+        if( isset( $_GET['pagenumber'] )) { $pagenumber = $_GET['pagenumber']; }
+        else { $pagenumber = 1; }
+        
+        
+        $pagingstyle = ($pagenumber==1) ? "pagenumberblue" : "pagenumberlight";
+        $paging = "<div class=\"".$pagingstyle."\"><a href=".$uri."&pagenumber=1>1</a></div>";
+        
+        for( $i = 2; $i < $pagingcount + 1; $i++ )
+        {
+            $pagingstyle = ($pagenumber==$i) ? "pagenumberblue" : "pagenumberlight";
+            $page = "<div class=\"".$pagingstyle."\"><a href=".$uri."&pagenumber=".$i.">".$i."</a></div>";
+            $paging .= "<div class=\"pagenumberlight\"> | </div>" . $page;
+        }
+        
+        return $paging;
+    }
+
+    function get_student_names()
+    {
+        //request all students from the database
+        $studentquery = mysql_query('SELECT * FROM students');
+        $studentnames = Array();
+        
+        while( $row = mysql_fetch_assoc( $studentquery ) )
+        {
+            array_push( $studentnames, $row['name'] );
+        }
+    
+        return $studentnames;
+    }
+
+    function create_student_list( $studentnamearray )
+    {
+            //list all the student names
+            $i = 0;
+            
+            $studentlist = "<div class=\"studentcolumn\">";
+            $studentlist .= "<div>Studentnaam</div>";
+            $even = true;
+            
+            foreach( $studentnamearray as $studentname )
+            {
+                if( $even == true ) {
+                    $evenodd = "-even";
+                    $even = false;
+                }
+                else {
+                    $evenodd = "-odd";
+                    $even = true;
+                }
+                
+                $studentlist .= "<div class=\"studentfield" . $evenodd . "\">" . $studentname . "</div>";
+                $i++;
+            }
+            
+            $studentlist .= "</div>";       
+            
+            return $studentlist;
+    }
+
+ 
