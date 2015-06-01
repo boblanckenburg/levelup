@@ -87,8 +87,8 @@
         $url = join_url( $components );
         return $url;
     }   
-   
-   
+    
+    
     function create_classes()
     {
         $class_query = mysql_query('SELECT DISTINCT(class) FROM students ORDER BY class ASC');
@@ -96,7 +96,10 @@
         
         while( $row = mysql_fetch_assoc( $class_query ) )
         {
-            $class .= "<a href='" . mod_url_query('class',$row['class']) . "'><div class='button'>" . $row['class'] . "</div></a>";
+            $button_style = 'button';
+            if( $row['class'] == $_GET['class'] ) { $button_style = 'button_selected'; }
+            
+            $class .= "<a href='" . mod_url_query('class',$row['class']) . "'><div class='".$button_style."'>" . $row['class'] . "</div></a>";
         }
         
         return $class;
@@ -110,7 +113,10 @@
         
         while( $row = mysql_fetch_assoc( $weeks_query ) )
         {
-            $weeks .= "<a href='" . mod_url_query('weeknumber',$row['weeknumber']) . "'><div class='button'>" . $row['weeknumber'] . "</div></a>";
+            $button_style = 'button';
+            if( $row['weeknumber'] == $_GET['weeknumber'] ) { $button_style = 'button_selected'; }
+            
+            $weeks .= "<a href='" . mod_url_query('weeknumber',$row['weeknumber']) . "'><div class='".$button_style."'>" . $row['weeknumber'] . "</div></a>";
         }
         
         return $weeks;
@@ -152,7 +158,7 @@
                 $checkboxname = $student_name."_".$date;
                 
                 //generate checkbox, link to javascript function to dynamically alter database without the need for reloading/saving
-                $student_rows .= "<input title=".$checkboxname." id=".$checkboxname."
+                $student_rows .= "<input title=".$presence_query_row['meta_date']." id=".$checkboxname."
                                          onclick='updateStudent(\"".$student_name."\",\"".$checkboxname."\",\"".$date."\")'
                                          type='checkbox' " . (($presence_query_row['present'] == 1) ? "checked" : "") . ">";
             }
@@ -197,7 +203,7 @@
                                             WHERE student_name = \"".$name."\"
                                               AND date = \"".$date."\"" );
     
-                mysql_close( $connection ); 
+                mysql_close( $database_connection ); 
             }
         }
         
@@ -216,11 +222,6 @@
         
         return $site;
     }
-
-
-    $connection = mysql_connect( "localhost:3307", "levelup", "veiligw8woord" );
-    mysql_select_db( "levelup", $connection );
-    
     
     $site = loadPage( $site );
 ?>
