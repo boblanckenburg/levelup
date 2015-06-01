@@ -1,62 +1,79 @@
 <?php
 
-//disgusting helper function because php lacks a reverse parse_url function
-function join_url( $parts, $encode=TRUE )
-{
-if ( $encode )
-{
-if ( isset( $parts['user'] ) ){
-$parts['user']     = rawurlencode( $parts['user'] );}
-if ( isset( $parts['pass'] ) ){
-$parts['pass']     = rawurlencode( $parts['pass'] );}
-if ( isset( $parts['host'] ) &&
-!preg_match( '!^(\[[\da-f.:]+\]])|([\da-f.:]+)$!ui', $parts['host'] ) ){
-$parts['host']     = rawurlencode( $parts['host'] );}
-if ( !empty( $parts['path'] ) ){
-$parts['path']     = preg_replace( '!%2F!ui', '/',
-rawurlencode( $parts['path'] ) );}
-// if ( isset( $parts['query'] ) ){
-// $parts['query']    = rawurlencode( $parts['query'] );}
-if ( isset( $parts['fragment'] ) ){
-$parts['fragment'] = rawurlencode( $parts['fragment'] );}
-}
-
-$url = '';
-if ( !empty( $parts['scheme'] ) ){
-$url .= $parts['scheme'] . ':';}
-if ( isset( $parts['host'] ) )
-{
-$url .= '//';
-if ( isset( $parts['user'] ) )
-{
-$url .= $parts['user'];
-if ( isset( $parts['pass'] ) ){
-$url .= ':' . $parts['pass'];}
-$url .= '@';
-}
-if ( preg_match( '!^[\da-f]*:[\da-f.:]+$!ui', $parts['host'] ) ){
-$url .= '[' . $parts['host'] . ']';} // IPv6
-else{
-$url .= $parts['host'];}             // IPv4 or name
-if ( isset( $parts['port'] ) ){
-$url .= ':' . $parts['port'];}
-if ( !empty( $parts['path'] ) && $parts['path'][0] != '/' ){
-$url .= '/';}
-}
-if ( !empty( $parts['path'] ) ){
-$url .= $parts['path'];}
-if ( isset( $parts['query'] ) )
-{
-$url .= '?';
-foreach( $parts['query'] as $key => $value )
-{
-$url .= $key . "=" . $value . "&";
-}
-}
-if ( isset( $parts['fragment'] ) ){
-$url .= '#' . $parts['fragment'];}
-return $url;
-}
+    //disgusting helper function because php lacks a reverse parse_url function
+    function join_url( $parts, $encode=TRUE )
+    {
+        if ( $encode )
+        {
+            if ( isset( $parts['user'] ) ){
+                $parts['user']     = rawurlencode( $parts['user'] );}
+            if ( isset( $parts['pass'] ) ){
+                $parts['pass']     = rawurlencode( $parts['pass'] );}
+            if ( isset( $parts['host'] ) &&
+            !preg_match( '!^(\[[\da-f.:]+\]])|([\da-f.:]+)$!ui', $parts['host'] ) ){
+                $parts['host']     = rawurlencode( $parts['host'] );}
+            if ( !empty( $parts['path'] ) )
+            {
+                $parts['path']     = preg_replace( '!%2F!ui', '/',
+                rawurlencode( $parts['path'] ) );
+            }
+            // if ( isset( $parts['query'] ) ){
+            // $parts['query']    = rawurlencode( $parts['query'] );}
+            if ( isset( $parts['fragment'] ) )
+            {
+                $parts['fragment'] = rawurlencode( $parts['fragment'] );
+            }
+        }
+            
+        $url = '';
+        if ( !empty( $parts['scheme'] ) )
+        {
+            $url .= $parts['scheme'] . ':';
+        }
+        if ( isset( $parts['host'] ) )
+        {
+            $url .= '//';
+            if ( isset( $parts['user'] ) )
+            {
+                $url .= $parts['user'];
+                if ( isset( $parts['pass'] ) )
+                {
+                    $url .= ':' . $parts['pass'];
+                }
+                $url .= '@';
+            }
+            if ( preg_match( '!^[\da-f]*:[\da-f.:]+$!ui', $parts['host'] ) )
+            {
+                $url .= '[' . $parts['host'] . ']';
+            } // IPv6
+            else
+            {
+                $url .= $parts['host'];
+            }             // IPv4 or name
+            if ( isset( $parts['port'] ) )
+            {
+                $url .= ':' . $parts['port'];
+            }
+            if ( !empty( $parts['path'] ) && $parts['path'][0] != '/' )
+            {
+                $url .= '/';
+            }
+        }
+        if ( !empty( $parts['path'] ) )
+        {
+            $url .= $parts['path'];}
+        if ( isset( $parts['query'] ) )
+        {
+            $url .= '?';
+            foreach( $parts['query'] as $key => $value )
+            {
+                $url .= $key . "=" . $value . "&";
+            }
+        }
+        if ( isset( $parts['fragment'] ) ){
+            $url .= '#' . $parts['fragment'];}
+        return $url;
+    }
 
     function mod_url_query( $parameter, $value )
     {
@@ -109,29 +126,38 @@ return $url;
             $student_rows .= "<tr><td>" . $student_name . "</td>";
             $student_rows .= "<td>";
         
-            $presence_query = mysql_query( 'SELECT * FROM presences_meta
-                                                LEFT JOIN presences ON presences_meta.date = presences.date
-                                                AND presences.student_name = "' . $student_name . '"
-                                                WHERE weeknumber = ' . $_GET['weeknumber'] );
-                                                    
+            //grab all presences from students and join the presences from the meta info table to get meta info coupled to each record
+            $presence_query = 
+            mysql_query( '
+            SELECT presences_meta.date AS meta_date, 
+               presences.date,
+               presences.student_name,
+               presences_meta.weeknumber,
+               presences.present
+                FROM presences_meta
+                LEFT JOIN presences ON presences_meta.date = presences.date
+                    AND presences.student_name = "' . $student_name . '"
+                    WHERE weeknumber = ' . $_GET['weeknumber'] );
+            
             while( $presence_query_row = mysql_fetch_assoc( $presence_query ) )
             {
-                $student_rows .= "<input type='checkbox' " . (($presence_query_row['present'] == 1) ? "checked" : "") . ">";
+                //get date, check if it exists, otherwise get meta date
+                $date = strtotime( $presence_query_row['date'] );
+                if( $date == false )
+                {
+                    $date = strtotime($presence_query_row['meta_date']);
+                }
+                
+                //generate unique checkboxname from student name and date of presence
+                $checkboxname = $student_name."_".$date;
+                
+                //generate checkbox, link to javascript function to dynamically alter database without the need for reloading/saving
+                $student_rows .= "<input title=".$checkboxname." id=".$checkboxname."
+                                         onclick='updateStudent(\"".$student_name."\",\"".$checkboxname."\",\"".$date."\")'
+                                         type='checkbox' " . (($presence_query_row['present'] == 1) ? "checked" : "") . ">";
             }
             
             $student_rows .= "</td>";
-//             
-            // $student_query = mysql_query('SELECT DISTINCT(name) FROM students ORDER BY name ASC');
-            // while( $row = mysql_fetch_assoc( $student_query ) )
-            // {
-                // $student_rows .= "<td>" . $row['name'] . "</td>";
-            // }
-//             
-            // $student_query = mysql_query('SELECT DISTINCT(name) FROM students ORDER BY name ASC');
-            // while( $row = mysql_fetch_assoc( $student_query ) )
-            // {
-                // $student_rows .= "<td>" . $row['name'] . "</td></tr>";
-            // }
         }
 
         return $student_rows;
@@ -149,23 +175,24 @@ return $url;
         {
             $presence = ($_GET['presence'] == "true") ? "1" : "0";
             $name = mysql_real_escape_string( $_GET['name'] );
-            $date = mysql_real_escape_string( $_GET['date'] );
-            
+            $date = date( "Y-m-d H:i:s", mysql_real_escape_string( $_GET['date'] ) );
+                                          
             //check if student and date are present in presences
             //if not, insert new
             $result = mysql_query(
                 "SELECT * FROM presences WHERE student_name=\"". $name."\" 
                                          AND date=\"".$date."\" 
-                                         LIMIT 1");
+                                         LIMIT 1" );
         
+            //insert new presence
             if(!mysql_fetch_row($result))
             {
                 mysql_query( "INSERT INTO presences(date, present, student_name) VALUES (\"".$date."\",\"".$presence."\",\"".$name."\")" );
             }
             
+            //update existing presence
             else
             {
-                // UPDATE presences SET present="1" WHERE student_name = "Jos" AND date = "2014-11-11 09:30:00";
                 mysql_query( "UPDATE presences SET present = \"".$presence."\"
                                             WHERE student_name = \"".$name."\"
                                               AND date = \"".$date."\"" );
@@ -181,6 +208,7 @@ return $url;
             $weeks = create_weeks();
             $studentrows = create_student_rows();
 
+            //inject dynamically generated content
             $site = str_replace( "{classes}", $classes, $site );
             $site = str_replace( "{weeks}", $weeks, $site );
             $site = str_replace( "{studentrows}", $studentrows, $site );
