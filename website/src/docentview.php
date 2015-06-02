@@ -210,6 +210,9 @@
         //otherwise, load site
         else
         {
+            if( isset( $_GET['class'] ) == false ) { $_GET['class'] = 'A'; }
+            if( isset( $_GET['weeknumber'] ) == false ) { $_GET['weeknumber'] = '1'; }
+            
             $classes = create_classes();
             $weeks = create_weeks();
             $studentrows = create_student_rows();

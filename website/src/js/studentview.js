@@ -9,4 +9,4 @@ function init_progressbar()
 window.onload = function()
 {
 	init_progressbar();
-}
+};
