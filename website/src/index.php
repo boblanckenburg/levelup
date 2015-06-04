@@ -23,16 +23,22 @@ $admin_pages_array = Array(
 //Keys are the titlebar names.
 //If this includes admin pages, they are only visible to admin users
 $titlebar_pages_array = Array(
-    "Student View" => "studentview", "Teacher View" => "docentview", "Statistics" => "statistieken"
+    "Student View" => "studentview", "Teacher View" => "docentview", "Statistieken" => "statistieken"
+);
+
+$inactive_pages_array = Array(
+    "login", "studentview"
 );
 
 //default values
 $index_file = "index.html";
 $content_file = "login";
 $name = $_SESSION['name'];
+$nick = $name;
 $password = $_SESSION['password'];
 $admin = false;
 $user = false;
+$inactive = true;
 
 //check if name is admin
 $admin_query = mysql_query(
@@ -46,12 +52,14 @@ if(mysql_fetch_row($admin_query))
 
 //check if name is valid user
 $student_query = mysql_query(
-    "SELECT name, password FROM students WHERE name=\"". $name."\" 
+    "SELECT name, nickname, password, inactive FROM students WHERE name=\"". $name."\" 
          AND password=\"".$password."\"" );
            
-if(mysql_fetch_row($student_query))
+if($student_query_row = mysql_fetch_assoc($student_query))
 {
+    $nick = $student_query_row['nickname'];
     $user = true;
+    $inactive = ($student_query_row['inactive'] == '1') ? true : false;
 }
 
 //if the logged in user is a student or admin
@@ -63,14 +71,25 @@ if( $user == true || $admin == true )
     //if page is given
     if( isset( $_GET['page'] ) )
     {
-        //if page is not an admin page OR user is admin, load given page (otherwise keep default page from above)
-        if( in_array( $_GET['page'], $admin_pages_array ) == false || $admin == true )
+        //if user is admin, load given page (otherwise keep default page from above)
+        if( $admin == true )
         {
             $content_file = $_GET["page"];
         }
+        
+        //if page is not an admin page
+        else if( in_array( $_GET['page'], $admin_pages_array ) == false )
+        {
+            //if user is active or page is accessible for inactive user,
+            //load given page (otherwise keep default page from above)
+            if( $inactive == false || in_array( $_GET['page'], $inactive_pages_array ) )
+            {
+                $content_file = $_GET["page"];
+            }
+        }
     }
     
-    $welcome = "Welkom " . $name;
+    $welcome = "Welkom " . $nick;
 }
 
 //otherwise, show error text above logout button

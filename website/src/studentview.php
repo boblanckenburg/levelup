@@ -3,7 +3,7 @@
     //default values
     $class = 'A';
     $level = 1;
-    $progress = 0;
+    $point = 0;
     $nextlvl = $level + 1;
     $daystreak = 0;
     $classposition = 0;
@@ -13,14 +13,20 @@
 
     //get the logged in username and retrieve known values
     $name = $_SESSION['name'];
-    $level_query = mysql_query( "SELECT * FROM students" );
-    while( $level_query_row = mysql_fetch_assoc( $level_query ) )
+    $student_query = mysql_query( "SELECT name, points, class FROM students" );
+    while( $student_query_row = mysql_fetch_assoc( $student_query ) )
     {
         //get values from current iteration student
-        $student_level = $level_query_row['level'];
-        $student_progress = $level_query_row['progress'];
+        $student_level = 1;
+        $student_points = $level_query_row['points'];
         $student_name = $level_query_row['name'];
         $student_class = $level_query_row['class'];
+        
+        $level_query = mysql_query( "SELECT MAX(level_meta.level) as max_level FROM students LEFT JOIN level_meta ON level_meta.points < students.points WHERE name = '".$name."'" );
+        while( $level_query_row = mysql_fetch_assoc( $level_query ) )
+        {
+            $student_level = $level_query_row['max_level'];
+        }
         
         //store the current iteration student's level and progress to the student array (in percent units)
         //if student is not apparent in the array yet, add it and reset it at 0
@@ -29,7 +35,7 @@
             $student_positions[ $student_name ] = 0;
         }
         
-        $student_positions[ $student_name ] += ($student_level * 100) + $student_progress;
+        $student_positions[ $student_name ] += ($student_level * 100) + $student_points;
         
         //store the current iteration student's level and progress to the class array (in percent units)
         //if class is not apparent in the array yet, add it and reset it at 0
@@ -45,7 +51,7 @@
         {
             $level = $student_level;
             $nextlvl = $level + 1;
-            $progress = $student_progress;
+            $points = $student_points;
             $class = $student_class;
         }
     }
@@ -67,7 +73,7 @@
     $site = str_replace( "{level}", $level, $site );
     $site = str_replace( "{prevlvl}", $level, $site );
     $site = str_replace( "{nextlvl}", $nextlvl, $site );
-    $site = str_replace( "{percent}", $progress, $site );
+    $site = str_replace( "{percent}", $points, $site );
     $site = str_replace( "{daystreak}", $daystreak, $site );
     $site = str_replace( "{classposition}", $classposition, $site );
     $site = str_replace( "{yourposition}", $yourposition, $site );
