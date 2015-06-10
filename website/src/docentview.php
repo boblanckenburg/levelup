@@ -122,13 +122,18 @@
         return $weeks;
     }
 
-    function create_student_row()
-    {   
+    function create_student_rows()
+    {
+        $weeknumber = mysql_real_escape_string( $_GET['weeknumber'] );
+        $class = mysql_real_escape_string( $_GET['class'] );
+        
         $student_rows = "";
-        $student_query = mysql_query('SELECT DISTINCT(name) FROM students WHERE class REGEXP "[' . $_GET['class'] . ']" ORDER BY name ASC');
+        $student_query = mysql_query('SELECT DISTINCT(name), inactive FROM students WHERE class REGEXP "[' . $class . ']" ORDER BY name ASC');
         while( $student_query_row = mysql_fetch_assoc( $student_query ) )
         {
             $student_name = $student_query_row['name'];
+            $student_inactive = $student_query_row['inactive'];
+            
             $student_rows .= "<tr><td>" . $student_name . "</td>";
             $student_rows .= "<td>";
         
@@ -143,7 +148,7 @@
                 FROM presences_meta
                 LEFT JOIN presences ON presences_meta.date = presences.date
                     AND presences.student_name = "' . $student_name . '"
-                    WHERE weeknumber = ' . $_GET['weeknumber'] );
+                    WHERE weeknumber = ' . $weeknumber );
             
             while( $presence_query_row = mysql_fetch_assoc( $presence_query ) )
             {
@@ -155,56 +160,141 @@
                 }
                 
                 //generate unique checkboxname from student name and date of presence
-                $checkboxname = $student_name."_".$date;
+                $checkboxname = "presence_".$student_name."_".$date;
                 
                 //generate checkbox, link to javascript function to dynamically alter database without the need for reloading/saving
                 $student_rows .= "<input title=".$presence_query_row['meta_date']." id=".$checkboxname."
-                                         onclick='updateStudent(\"".$student_name."\",\"".$checkboxname."\",\"".$date."\")'
+                                         onclick='updateStudentPresence(\"".$student_name."\",\"".$checkboxname."\",\"".$date."\")'
                                          type='checkbox' " . (($presence_query_row['present'] == 1) ? "checked" : "") . ">";
             }
             
+            $student_rows .= "</td>";
+            
+            //homework input field
+            $student_rows .= "<td>";
+            
+            $homework_query = "SELECT grade FROM homework WHERE student_name = \"".$student_name."\" AND weeknumber = \"" . $weeknumber . "\"";
+            $homework_query_result = mysql_query( $homework_query );
+
+            $grade = "";
+            if( $homework_query_row = mysql_fetch_assoc( $homework_query_result ) )
+            {
+                $grade = (float)$homework_query_row['grade'];
+            }
+            
+            //generate unique textinputname from student name and weeknumber for homework
+            $textinputname = "homework_".$student_name."_".$weeknumber;
+            $student_rows .= "<input type='text' size='3' style='margin-top:4px'
+                                    id=".$textinputname." value='".$grade."' name='".$textinputname."'
+                                    onkeyup='updateStudentHomework(\"".$student_name."\",\"".$textinputname."\")'>";
+            
+            $student_rows .= "</td>";
+
+            //own project input field
+            $student_rows .= "<td><input type='text' size='3'></td>";
+            
+            $student_rows .= "<td>";
+            
+            //generate unique checkboxname from student name for inactivity
+            $checkboxname = "inactive_".$student_name;
+            
+            //generate checkbox, link to javascript function to dynamically alter database without the need for reloading/saving
+            $student_rows .= "<input title='Resultaten van deze student worden niet meegenomen in de statistieken.' id=".$checkboxname."
+                                     onclick='updateStudentInactivity(\"".$student_name."\",\"".$checkboxname."\")'
+                                     type='checkbox' " . (($student_inactive == 1) ? "checked" : "") . ">";
+        
             $student_rows .= "</td>";
         }
 
         return $student_rows;
     }
     
-    function create_student_rows()
+    function update_presence()
     {
-        return create_student_row();
+        $presence = ($_GET['presence'] == "true") ? "1" : "0";
+        $name = mysql_real_escape_string( $_GET['name'] );
+        $date = date( "Y-m-d H:i:s", mysql_real_escape_string( $_GET['date'] ) );
+                                      
+        //check if student and date are present in presences
+        //if not, insert new
+        $result = mysql_query(
+            "SELECT * FROM presences WHERE student_name=\"". $name."\" 
+                                     AND date=\"".$date."\" 
+                                     LIMIT 1" );
+    
+        //insert new presence
+        if(!mysql_fetch_row($result))
+        {
+            mysql_query( "INSERT INTO presences(date, present, student_name) VALUES (\"".$date."\",\"".$presence."\",\"".$name."\")" );
+        }
+        
+        //update existing presence
+        else
+        {
+            mysql_query( "UPDATE presences SET present = \"".$presence."\"
+                                        WHERE student_name = \"".$name."\"
+                                          AND date = \"".$date."\"" );
+        }
     }
 
+    function update_homework()
+    {
+        $homework = mysql_real_escape_string( $_GET['homework'] );
+        $name = mysql_real_escape_string( $_GET['name'] );
+        $weeknumber = mysql_real_escape_string( isset($_GET['weeknumber'])?$_GET['weeknumber']:1 );
+                                      
+        //check if student and date are present in homework
+        //if not, insert new
+        $result = mysql_query(
+            "SELECT * FROM homework WHERE student_name=\"". $name."\" 
+                                     AND weeknumber=\"".$weeknumber."\" 
+                                     LIMIT 1" );
+    
+        //insert new presence
+        if(!mysql_fetch_row($result))
+        {
+            mysql_query( "INSERT INTO homework(student_name, weeknumber, grade) VALUES (\"".$name."\",\"".$weeknumber."\",\"".$homework."\")" );
+        }
+        
+        //update existing presence
+        else
+        {
+            mysql_query( "UPDATE homework SET grade = \"".$homework."\"
+                                        WHERE student_name = \"".$name."\"
+                                          AND weeknumber = \"".$weeknumber."\"" );
+        }
+    }
+
+    function update_inactivity()
+    {
+        $name = mysql_real_escape_string( $_GET['name'] );
+        $inactive = ($_GET['inactive'] == "true") ? "1" : "0";
+        $query = "UPDATE students SET inactive = \"".$inactive."\"
+                                        WHERE name = \"".$name."\"";
+        echo $query;
+        mysql_query( $query );
+    }
+    
     function loadPage( $site )
     {
-        //if we receive ajax, update the presence data for student
+        //if we receive ajax...
+        //update the presence data for student
         if( isset($_GET['name']) && isset($_GET['date']) && isset($_GET['presence']) )
         {
-            $presence = ($_GET['presence'] == "true") ? "1" : "0";
-            $name = mysql_real_escape_string( $_GET['name'] );
-            $date = date( "Y-m-d H:i:s", mysql_real_escape_string( $_GET['date'] ) );
-                                          
-            //check if student and date are present in presences
-            //if not, insert new
-            $result = mysql_query(
-                "SELECT * FROM presences WHERE student_name=\"". $name."\" 
-                                         AND date=\"".$date."\" 
-                                         LIMIT 1" );
+            update_presence();
+        }
         
-            //insert new presence
-            if(!mysql_fetch_row($result))
-            {
-                mysql_query( "INSERT INTO presences(date, present, student_name) VALUES (\"".$date."\",\"".$presence."\",\"".$name."\")" );
-            }
-            
-            //update existing presence
-            else
-            {
-                mysql_query( "UPDATE presences SET present = \"".$presence."\"
-                                            WHERE student_name = \"".$name."\"
-                                              AND date = \"".$date."\"" );
-    
-                mysql_close( $database_connection ); 
-            }
+        //update the inactivity
+        else if( isset($_GET['name']) && isset($_GET['inactive']) )
+        {
+            update_inactivity();
+        }
+        
+        
+        //update the homework field
+        else if( isset($_GET['name']) && isset($_GET['homework']) )
+        {
+            update_homework();
         }
         
         //otherwise, load site
@@ -227,4 +317,5 @@
     }
     
     $site = loadPage( $site );
+    mysql_close( $database_connection ); 
 ?>

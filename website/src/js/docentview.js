@@ -1,6 +1,24 @@
 
 
-function updateStudent(name,checkboxname,date)
+function updateStudentHomework(name,inputname)
+{
+	url = window.location.href+"&homework="+$("#"+inputname).prop('value')+"&name="+name;
+	sendXMLHttpRequest( url );
+}
+
+function updateStudentInactivity(name,checkboxname)
+{
+	url = window.location.href+"&inactive="+$("#"+checkboxname).prop('checked')+"&name="+name;
+	sendXMLHttpRequest( url );
+}
+
+function updateStudentPresence(name,checkboxname,date)
+{
+	url = window.location.href+"&presence="+$("#"+checkboxname).prop('checked')+"&date="+date+"&name="+name;
+	sendXMLHttpRequest( url );
+}
+
+function sendXMLHttpRequest( url )
 {
 	document.getElementById("serverresponse").innerHTML = "Save request sent!";
 
@@ -41,11 +59,10 @@ function updateStudent(name,checkboxname,date)
 				}
 			}
 		};
-		
-		url = window.location.href+"&presence="+$("#"+checkboxname).prop('checked')+"&date="+date+"&name="+name;
 
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
 	}
 }
 
+	

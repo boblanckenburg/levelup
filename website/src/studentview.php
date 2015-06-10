@@ -77,5 +77,6 @@
     $site = str_replace( "{daystreak}", $daystreak, $site );
     $site = str_replace( "{classposition}", $classposition, $site );
     $site = str_replace( "{yourposition}", $yourposition, $site );
+    $site = str_replace( "{classletter}", $class, $site );
 
 ?>
