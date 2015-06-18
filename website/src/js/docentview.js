@@ -1,7 +1,14 @@
 
+function updateStudentProject(name,inputname)
+{
+	document.getElementById(name+'_total').innerHTML = "refresh";
+	url = window.location.href+"&project="+$("#"+inputname).prop('value')+"&name="+name;
+	sendXMLHttpRequest( url );
+}
 
 function updateStudentHomework(name,inputname)
 {
+	document.getElementById(name+'_total').innerHTML = "refresh";
 	url = window.location.href+"&homework="+$("#"+inputname).prop('value')+"&name="+name;
 	sendXMLHttpRequest( url );
 }
@@ -14,6 +21,7 @@ function updateStudentInactivity(name,checkboxname)
 
 function updateStudentPresence(name,checkboxname,date)
 {
+	document.getElementById(name+'_total').innerHTML = "refresh";
 	url = window.location.href+"&presence="+$("#"+checkboxname).prop('checked')+"&date="+date+"&name="+name;
 	sendXMLHttpRequest( url );
 }

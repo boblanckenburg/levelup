@@ -1,5 +1,7 @@
 <?php
 
+    include 'levelcalculations.php';
+
     //disgusting helper function because php lacks a reverse parse_url function
     function join_url( $parts, $encode=TRUE )
     {
@@ -176,33 +178,58 @@
             $homework_query = "SELECT grade FROM homework WHERE student_name = \"".$student_name."\" AND weeknumber = \"" . $weeknumber . "\"";
             $homework_query_result = mysql_query( $homework_query );
 
-            $grade = "";
+            $homework_grade = "";
             if( $homework_query_row = mysql_fetch_assoc( $homework_query_result ) )
             {
-                $grade = (float)$homework_query_row['grade'];
+                $homework_grade = (float)$homework_query_row['grade'];
             }
             
             //generate unique textinputname from student name and weeknumber for homework
             $textinputname = "homework_".$student_name."_".$weeknumber;
             $student_rows .= "<input type='text' size='3' style='margin-top:4px'
-                                    id=".$textinputname." value='".$grade."' name='".$textinputname."'
+                                    id=".$textinputname." value='".$homework_grade."' name='".$textinputname."'
                                     onkeyup='updateStudentHomework(\"".$student_name."\",\"".$textinputname."\")'>";
             
             $student_rows .= "</td>";
 
+
             //own project input field
-            $student_rows .= "<td><input type='text' size='3'></td>";
-            
             $student_rows .= "<td>";
             
-            //generate unique checkboxname from student name for inactivity
-            $checkboxname = "inactive_".$student_name;
+            $project_query = "SELECT grade FROM project WHERE student_name = \"".$student_name."\" AND weeknumber = \"" . $weeknumber . "\"";
+            $project_query_result = mysql_query( $project_query );
+
+            $project_grade = "";
+            if( $project_query_row = mysql_fetch_assoc( $project_query_result ) )
+            {
+                $project_grade = (float)$project_query_row['grade'];
+            }
             
+            //generate unique textinputname from student name and weeknumber for project
+            $textinputname = "project_".$student_name."_".$weeknumber;
+            $student_rows .= "<input type='text' size='3' style='margin-top:4px'
+                                    id=".$textinputname." value='".$project_grade."' name='".$textinputname."'
+                                    onkeyup='updateStudentProject(\"".$student_name."\",\"".$textinputname."\")'>";
+                                    
+            $student_rows .= "</td>";
+            
+            
+            //generate unique checkboxname from student name for inactivity
+            $student_rows .= "<td>";
+            $checkboxname = "inactive_".$student_name;
+
             //generate checkbox, link to javascript function to dynamically alter database without the need for reloading/saving
             $student_rows .= "<input title='Resultaten van deze student worden niet meegenomen in de statistieken.' id=".$checkboxname."
                                      onclick='updateStudentInactivity(\"".$student_name."\",\"".$checkboxname."\")'
                                      type='checkbox' " . (($student_inactive == 1) ? "checked" : "") . ">";
-        
+            $student_rows .= "</td>";
+            
+            
+            //display total points for student
+            $student_rows .= "<td>";
+            
+            $student_rows .= "<div id='".$student_name."_total'>" . get_student_points( $student_name ) . "</div>";
+            
             $student_rows .= "</td>";
         }
 
@@ -265,36 +292,74 @@
         }
     }
 
+    function update_project()
+    {
+        $project = mysql_real_escape_string( $_GET['project'] );
+        $name = mysql_real_escape_string( $_GET['name'] );
+        $weeknumber = mysql_real_escape_string( isset($_GET['weeknumber'])?$_GET['weeknumber']:1 );
+                                      
+        //check if student and date are present in project
+        //if not, insert new
+        $result = mysql_query(
+            "SELECT * FROM project WHERE student_name=\"". $name."\" 
+                                     AND weeknumber=\"".$weeknumber."\" 
+                                     LIMIT 1" );
+    
+        //insert new presence
+        if(!mysql_fetch_row($result))
+        {
+            mysql_query( "INSERT INTO project(student_name, weeknumber, grade) VALUES (\"".$name."\",\"".$weeknumber."\",\"".$project."\")" );
+        }
+        
+        //update existing presence
+        else
+        {
+            mysql_query( "UPDATE project SET grade = \"".$project."\"
+                                        WHERE student_name = \"".$name."\"
+                                          AND weeknumber = \"".$weeknumber."\"" );
+        }
+    }
+
     function update_inactivity()
     {
         $name = mysql_real_escape_string( $_GET['name'] );
         $inactive = ($_GET['inactive'] == "true") ? "1" : "0";
         $query = "UPDATE students SET inactive = \"".$inactive."\"
                                         WHERE name = \"".$name."\"";
-        echo $query;
         mysql_query( $query );
     }
     
     function loadPage( $site )
     {
+        update_points( $_GET['name'] );
         //if we receive ajax...
         //update the presence data for student
         if( isset($_GET['name']) && isset($_GET['date']) && isset($_GET['presence']) )
         {
             update_presence();
+            update_points( $_GET['name'] );
         }
         
         //update the inactivity
         else if( isset($_GET['name']) && isset($_GET['inactive']) )
         {
             update_inactivity();
+            update_points( $_GET['name'] );
         }
-        
-        
+
         //update the homework field
         else if( isset($_GET['name']) && isset($_GET['homework']) )
         {
             update_homework();
+            update_points( $_GET['name'] );
+        }
+        
+
+        //update the project field
+        else if( isset($_GET['name']) && isset($_GET['project']) )
+        {
+            update_project();
+            update_points( $_GET['name'] );
         }
         
         //otherwise, load site

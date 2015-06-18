@@ -3,11 +3,9 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
-
-# THANKS
-
-    <name>
+    Jos van Egmond -- Developer -- @Joozey
+    Jan Oliehoek -- Graphic Designer -- 
+    Bo Blanckenburg -- Project Lead
 
 # TECHNOLOGY COLOPHON
 

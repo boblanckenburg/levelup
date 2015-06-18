@@ -78,18 +78,6 @@
 	padding: 40px 15px 15px 15px;
 }
 
-.levelcounter .image
-{
-	display:block;
-	float: left;
-	width: 380px;
-	height: 239px;
-	background-image: url('../img/levelcounterbg.png');
-	background-repeat: no-repeat;
-	background-position: center;
-	margin: 0px auto 0px auto;
-}
-
 
 
 .progress-bar {
@@ -134,13 +122,13 @@
     color: #49a2e4;
 }
 
-.percentage
+.levelpoints
 {
 	margin: 0px auto 0px auto;
 	text-align: center;
 	font-size: 1em;
 	
-	width: 60px;
+	width: 120px;
 	height: 30px;
 	
 	color: white;

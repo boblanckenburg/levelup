@@ -33,9 +33,9 @@ $inactive_pages_array = Array(
 //default values
 $index_file = "index.html";
 $content_file = "login";
-$name = $_SESSION['name'];
+$name = mysql_escape_string( $_SESSION['name'] );
 $nick = $name;
-$password = $_SESSION['password'];
+$password = mysql_escape_string( $_SESSION['password'] );
 $admin = false;
 $user = false;
 $inactive = true;
