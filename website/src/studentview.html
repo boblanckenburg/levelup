@@ -16,9 +16,7 @@
 
 <link rel="stylesheet" href="css/emblem.php">
 <section class="levelcounter">
-	<a href="index.php?page=movie" id="levelcounter_image">
-		{backgroundurl}
-	</a>
+	<a href="index.php?page=movie" id="levelcounter_image"><div id="levelcounter_imageurl" hidden>{backgroundurl}</div></a>
 
 	<div class="progress-bar">
 		<div class="progress-fill" id="levelcounter_progressbar"></div>
@@ -26,7 +24,7 @@
 	    <div class="nextlevel" id="levelcounter_nextlvl">{nextlvl}</div>
 	    
 	    <div class="levelpoints">{levelpoints}</div>
-	    <div id="levelcounter_percentage" h>{percent}</div>
+	    <div id="levelcounter_percentage" hidden>{percent}</div>
 	</div>
 	
 </section>

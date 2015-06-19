@@ -8,14 +8,16 @@ function init_progressbar()
 
 function init_emblem()
 {
-	var background_url = document.getElementById("levelcounter_image").innerHTML + ".png";
-	alert( background_url );
-	document.getElementById("levelcounter_image").css("background-image","url('"+background_url+"')");
+	var background_url = document.getElementById("levelcounter_imageurl").innerHTML + ".png";
+	document.getElementById("levelcounter_image").style.backgroundImage = "url('"+background_url+"')";
+	document.getElementById("levelcounter_image").onmouseover = emblem_hover;
+	document.getElementById("levelcounter_image").onmouseout = init_emblem;
 }
 
 function emblem_hover()
 {
-	document.getElementById("levelcounter_image").css("background-image","url("+background_url+")");
+	var background_url = document.getElementById("levelcounter_imageurl").innerHTML + "-MouseOver.png";
+	document.getElementById("levelcounter_image").style.backgroundImage = "url("+background_url+")";
 }
 
 window.onload = function()

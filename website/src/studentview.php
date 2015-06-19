@@ -24,9 +24,11 @@
     
     $current_level_points = get_points_from_level( $level );
     $next_level_points = get_points_from_level( $level + 1 );
+    if( $next_level_points == "" ) { $next_level_points = $points; }
+    
     $points_visible = $points . " / " . $next_level_points; 
-    $percentage = ((($points - $current_level_points) / ($next_level_points - $current_level_points)) * 100);
-    $backgroundurl = "../img/emblems/level0";
+    $percentage = abs((($points - $current_level_points) / ($next_level_points - $current_level_points)) * 100);
+    $backgroundurl = "./img/emblems/level" . $level;
     
     $nextlvl = $level + 1;
     

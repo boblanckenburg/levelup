@@ -25,8 +25,6 @@ function update_points( $studentname )
     
     $update_query = "UPDATE students SET points = " . $points . " WHERE name = '" . $studentname . "'";
     
-    echo $update_query;
-    
     mysql_query( $update_query );
 }
 
@@ -108,7 +106,6 @@ function get_class_points( $studentname )
                         (SELECT class FROM students WHERE name = '" . $studentname . "')";
     
     $student_result = mysql_fetch_array( mysql_query( $student_query ) );
-    print_r( $student_result );
     
     return $student_result;
 }
