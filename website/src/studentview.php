@@ -16,6 +16,11 @@
     //get the logged in username and retrieve known values
     $name = mysql_escape_string( $_SESSION['name'] );
     
+    $class_query = "SELECT class FROM students WHERE name = '" . $name . "'";
+    $class_result = mysql_query( $class_query );
+    $class_row = mysql_fetch_assoc( $class_result );
+    $class = $class_row['class'];
+
     $point_totals = get_point_totals();
     $points = $point_totals['student'][$name];
     $level = get_level_from_points( $points );
