@@ -42,7 +42,10 @@ function get_student_points( $studentname )
 
 function get_point_totals()
 {
-    $point_totals_array = Array();
+    $point_totals = Array();
+    $point_totals_student = Array();
+    $point_totals_class = Array();
+    $class_size = Array();
     
     $student_query = "SELECT name, class, points, inactive FROM students";
     
@@ -56,12 +59,22 @@ function get_point_totals()
         
         $point_totals_student[$student_name] = $student_points;
         
+        //only add student results to the class results if the student is active
         if( $student_inactive == '0' )
         {
+            //add student points and add one to students in class, we'll divide the two after this while
             $point_totals_class[$student_class] += $student_points;
+            $class_size[$student_class] += 1;
         }
     }
-        
+    
+    //normalize the class points by dividing by the amount of students in the class
+    $class_keys = array_keys( $point_totals_class );
+    foreach( $class_keys as $key )
+    {
+        $point_totals_class[$key] /= $class_size[$key];
+    }
+    
     arsort( $point_totals_student );
     arsort( $point_totals_class );
     
