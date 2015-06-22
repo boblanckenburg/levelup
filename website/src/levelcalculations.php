@@ -8,6 +8,7 @@ function update_points( $studentname )
     $presences_query = "SELECT COUNT(present) AS totalpresent FROM presences WHERE student_name = '" . $studentname . "' AND present = '1'";
     $homework_query = "SELECT SUM(grade) AS totalgrade FROM homework WHERE student_name = '" . $studentname . "'";
     $project_query = "SELECT SUM(grade) AS totalgrade FROM project WHERE student_name = '" . $studentname . "'";  
+    $codecademy_query = "SELECT grade FROM codecademy WHERE student_name = '" . $studentname . "'";  
     
     $points_meta_result = mysql_fetch_assoc( mysql_query( $points_meta_query ) );
     $points_per_presence = $points_meta_result['presence'];
@@ -21,7 +22,10 @@ function update_points( $studentname )
     $project_result = mysql_fetch_array( mysql_query( $project_query ) );
     $project = $project_result['totalgrade'];
     
-    $points = $presences * $points_per_presence + $homework + $project;
+    $codecademy_result = mysql_fetch_array( mysql_query( $codecademy_query ) );
+    $codecademy = $codecademy_result['grade'];
+    
+    $points = $presences * $points_per_presence + $homework + $project + $codecademy;
     
     $update_query = "UPDATE students SET points = " . $points . " WHERE name = '" . $studentname . "'";
     
