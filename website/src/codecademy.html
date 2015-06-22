@@ -1,6 +1,11 @@
 <section>
-	<ul>
-		<li>Vul progressie in</li>
-		<li>Bekijk progressie</li>
-	</ul>
+	<h1>{codecademytitle}</h1>
+	<p>{codecademytext}</p>
+	
+	<form "index.php?page=codecademy" method="GET">
+  		<input type="hidden" name="submitgrade" value="true" /> 
+  		<input type="hidden" name="page" value="codecademy" /> 
+		<input type="text" value="0" size="4" name="codecademygrade">
+		<input type="submit" value="update">
+	</form>
 </section>
