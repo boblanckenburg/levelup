@@ -27,12 +27,13 @@
     $classposition = array_search( $class, array_keys( $point_totals['class'] ) ) + 1;
     $yourposition = array_search( $name, array_keys( $point_totals['student'] ) ) + 1;
     
-    $current_level_points = get_points_from_level( $level );
-    $next_level_points = get_points_from_level( $level + 1 );
+    // $current_level_points = get_points_from_level( $level );
+    $next_level_points = get_points_from_level( $level );
     if( $next_level_points == "" ) { $next_level_points = $points; }
     
     $points_visible = $points . " / " . $next_level_points; 
-    $percentage = abs((($points - $current_level_points) / ($next_level_points - $current_level_points)) * 100);
+    //$percentage = abs((($points - $current_level_points) / ($next_level_points - $current_level_points)) * 100);
+    $percentage = get_percentage_from_points( $points );
     $backgroundurl = "./img/emblems/level" . $level;
     
     $nextlvl = $level + 1;

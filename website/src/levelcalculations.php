@@ -90,20 +90,19 @@ function get_point_totals()
 
 function get_level_from_points( $points )
 {
-    $level_query = "SELECT level FROM level_meta WHERE points <= " . $points . " ORDER BY level DESC LIMIT 1";
+    $level_query = "SELECT points, level FROM level_meta ORDER BY level ASC";
     $level_result = mysql_query( $level_query );
-    $level_row = mysql_fetch_assoc( $level_result );
     
-    return $level_row['level'];
-}
+    $level = 0;
+    while( $level_row = mysql_fetch_assoc( $level_result ) )
+    {
+        if( $points >= $level_row['points'] ) 
+        {
+            $level = $level_row['level']+1;
+        }
+    }
 
-function get_percentage_from_points( $points )
-{
-    $level_query = "SELECT points FROM level_meta WHERE points >= " . $points . " ORDER BY level ASC LIMIT 1";
-    $level_result = mysql_query( $level_query );
-    $level_row = mysql_fetch_assoc( $level_result );
-    
-    return (int)($points / $level_row['points']);
+    return $level;
 }
 
 function get_points_from_level( $level )
@@ -113,6 +112,18 @@ function get_points_from_level( $level )
     $level_row = mysql_fetch_assoc( $level_result );
     
     return $level_row['points'];
+}
+
+function get_percentage_from_points( $points )
+{
+    $level = get_level_from_points( $points );
+    $points_low = get_points_from_level( $level-1 );
+    $points_high = get_points_from_level( $level );
+    
+    if( $points_low == '' ) { $points_low = 0; }
+    if( $points > $points_high ) { $points = $points_high; }
+    
+    return (($points - $points_low) / ($points_high - $points_low)) * 100;
 }
 
 function get_class_points( $studentname )
