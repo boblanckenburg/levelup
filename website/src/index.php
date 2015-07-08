@@ -16,14 +16,14 @@ mysql_select_db( "levelup", $database_connection );
 
 //array with all admin pages, not accessible to non-admin users
 $admin_pages_array = Array(
-    "docentview"
+    "docentview", "administration"
 );
 
 //array with all pages to be added to the titlebar.
 //Keys are the titlebar names.
 //If this includes admin pages, they are only visible to admin users
 $titlebar_pages_array = Array(
-    "Student View" => "studentview", "Teacher View" => "docentview", "Statistieken" => "statistieken"
+    "Student View" => "studentview", "Teacher View" => "docentview", "Administration" => "administration"
 );
 
 $inactive_pages_array = Array(
@@ -52,7 +52,7 @@ if(mysql_fetch_row($admin_query))
 
 //check if name is valid user
 $student_query = mysql_query(
-    "SELECT name, nickname, password, inactive FROM students WHERE name=\"". $name."\" 
+    "SELECT name, nickname, password, lastlogin, inactive FROM students WHERE name=\"". $name."\" 
          AND password=\"".$password."\"" );
            
 if($student_query_row = mysql_fetch_assoc($student_query))
@@ -60,6 +60,25 @@ if($student_query_row = mysql_fetch_assoc($student_query))
     $nick = $student_query_row['nickname'];
     $user = true;
     $inactive = ($student_query_row['inactive'] == '1') ? true : false;
+    $lastlogin = $student_query_row['lastlogin'];
+    
+    $current_date = date("Y-m-d G:i:s");
+    $diff = (abs(strtotime($current_date) - strtotime($lastlogin)));
+    
+    $years = floor($diff / (365*60*60*24));
+    $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+    $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+    if( $days >= 1 )
+    {
+        //strike! Push to database
+        $streak_query = "INSERT INTO streak ( student_name ) VALUES( '".$name."' )";
+        mysql_query( $streak_query );
+        
+        //update student lastlogin timestamp
+        $update_lastlogin_query = "UPDATE students SET lastlogin = '".$current_date."' WHERE name = '".$name."'";
+        mysql_query( $update_lastlogin_query );
+    }
 }
 
 //if the logged in user is a student or admin

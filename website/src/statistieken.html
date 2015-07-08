@@ -1,10 +1,29 @@
 <section>
-	<ul>
-		<li>Bekijk progressie laatste x dagen</li>
-		<li>Bekijk streaks historie</li>
-		<li>Bekijk t.o.v. klas en totaal</li>
-	</ul>
 	
-	{graph}
+	<section id="stats">
+		<h2>Statistieken</h2>
+		<table>
+			<tr>
+				<td><div class="subject">Aanwezigheid: </div></td><td><div class="points">{presence}</div></td>
+			</tr>
+			<tr>
+				<td><div class="subject">Huiswerk: </div></td><td><div class="points">{homework}</div></td>
+			</tr>
+			<tr>
+				<td><div class="subject">Eigen project: </div></td><td><div class="points">{project}</div></td>
+			</tr>
+			<tr>
+				<td><div class="subject">Codecademy: </div></td><td><div class="points">{codecademy}</div></td>
+			</tr>
+			<tr>
+				<td><div class="subject">Totaal: </div></td><td><div class="totalpoints">{total}</div></td>
+			</tr>
+		</table>
+	</section>
 	
+	<link rel="stylesheet" href="./css/emblem_small.php">
+	<section id="levelcounters">
+		<h2>Verdiende badges</h2>
+		{levelcounters}
+	</section>
 </section>

@@ -14,7 +14,7 @@ if( isset($_GET['logout']))
 if (isset($_POST['submit']))
 {
     $_SESSION['name'] = stripslashes($_POST['name']);
-    $_SESSION['password'] = stripslashes(md5($_POST['password']));
+    $_SESSION['password'] = stripslashes($_POST['password']);
     
     header("location: index.php");
 }

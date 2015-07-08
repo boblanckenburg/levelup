@@ -4,7 +4,7 @@ function update_points( $studentname )
 {
     $studentname = mysql_escape_string( $studentname );
     
-    $points_meta_query = "SELECT presence FROM points_meta";
+    $points_meta_query = "SELECT presence, codecademy FROM points_meta";
     $presences_query = "SELECT COUNT(present) AS totalpresent FROM presences WHERE student_name = '" . $studentname . "' AND present = '1'";
     $homework_query = "SELECT SUM(grade) AS totalgrade FROM homework WHERE student_name = '" . $studentname . "'";
     $project_query = "SELECT SUM(grade) AS totalgrade FROM project WHERE student_name = '" . $studentname . "'";  
@@ -12,6 +12,7 @@ function update_points( $studentname )
     
     $points_meta_result = mysql_fetch_assoc( mysql_query( $points_meta_query ) );
     $points_per_presence = $points_meta_result['presence'];
+    $points_codecademy = $points_meta_result['codecademy'];
     
     $presences_result = mysql_fetch_array( mysql_query( $presences_query ) );
     $presences = $presences_result['totalpresent'];
@@ -25,11 +26,42 @@ function update_points( $studentname )
     $codecademy_result = mysql_fetch_array( mysql_query( $codecademy_query ) );
     $codecademy = $codecademy_result['grade'];
     
-    $points = $presences * $points_per_presence + $homework + $project + $codecademy;
+    $points = $presences * $points_per_presence + $homework + $project + $codecademy * $points_codecademy;
     
     $update_query = "UPDATE students SET points = " . $points . " WHERE name = '" . $studentname . "'";
     
     mysql_query( $update_query );
+}
+
+function get_student_point_array( $studentname )
+{
+    $points = Array();
+    
+    $points_meta_query = "SELECT presence, codecademy FROM points_meta";
+    $presences_query = "SELECT COUNT(present) AS totalpresent FROM presences WHERE student_name = '" . $studentname . "' AND present = '1'";
+    $homework_query = "SELECT SUM(grade) AS totalgrade FROM homework WHERE student_name = '" . $studentname . "'";
+    $project_query = "SELECT SUM(grade) AS totalgrade FROM project WHERE student_name = '" . $studentname . "'";  
+    $codecademy_query = "SELECT grade FROM codecademy WHERE student_name = '" . $studentname . "'";  
+    
+    $points_meta_result = mysql_fetch_assoc( mysql_query( $points_meta_query ) );
+    $points_per_presence = $points_meta_result['presence'];
+    $points_codecademy = $points_meta_result['codecademy'];
+    
+    $presences_result = mysql_fetch_array( mysql_query( $presences_query ) );
+    $points['presence'] = (int)$presences_result['totalpresent'] * $points_per_presence;
+    
+    $homework_result = mysql_fetch_array( mysql_query( $homework_query ) );
+    $points['homework'] = (int)$homework_result['totalgrade'];
+    
+    $project_result = mysql_fetch_array( mysql_query( $project_query ) );
+    $points['project'] = (int)$project_result['totalgrade'];
+    
+    $codecademy_result = mysql_fetch_array( mysql_query( $codecademy_query ) );
+    $points['codecademy'] = (int)$codecademy_result['grade'] * $points_codecademy;
+    
+    $points['total'] = (int)$points['presence'] + $points['homework'] + $points['project'] + $points['codecademy'];
+    
+    return $points;
 }
 
 function get_student_points( $studentname )
@@ -42,6 +74,15 @@ function get_student_points( $studentname )
     
     $points = $points_row['points'];
     return $points;
+}
+
+function get_student_next_level_points( $studentname )
+{
+    $student_points = get_student_points( $studentname );
+    $next_level = get_level_from_points( $student_points ) + 1;
+    $next_level_points = get_points_from_level( $next_level );
+    
+    return $next_level_points;
 }
 
 function get_point_totals()
@@ -107,7 +148,8 @@ function get_level_from_points( $points )
 
 function get_points_from_level( $level )
 {
-    $level_query = "SELECT points FROM level_meta WHERE level = " . $level;
+    $level = mysql_escape_string( $level );
+    $level_query = "SELECT points FROM level_meta WHERE level <= " . $level . " ORDER BY level DESC LIMIT 1";
     $level_result = mysql_query( $level_query );
     $level_row = mysql_fetch_assoc( $level_result );
     
@@ -136,11 +178,6 @@ function get_class_points( $studentname )
     $student_result = mysql_fetch_array( mysql_query( $student_query ) );
     
     return $student_result;
-}
-
-function get_class_position( $studentname )
-{
-    
 }
 
 

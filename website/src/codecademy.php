@@ -22,7 +22,6 @@ if( $_GET['submitgrade'] == 'true' )
     //update existing presence
     else
     {
-        echo 
         mysql_query( "UPDATE codecademy SET grade = ".$grade."
                                     WHERE student_name = \"".$name."\"" );
     }
