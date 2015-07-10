@@ -27,7 +27,7 @@
     $streak_query = "SELECT COUNT(student_name) AS streak FROM streak WHERE student_name = '" . $name . "'";
     $streak_result = mysql_query( $streak_query );
     $streak_row = mysql_fetch_assoc( $streak_result );
-    $daystreak = $streak_row['streak'];
+    $daystreak = $streak_row['streak'] + 1;
     
     $next_level_points = get_points_from_level( $level ); //get the points needed to reach this level
     if( $next_level_points == "" ) { $next_level_points = $points; } //get the points needed to reach next level
