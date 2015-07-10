@@ -1,8 +1,5 @@
 <?php
 
-include "levelcalculations.php";
-
-
 //default values
 $movielink = "4FhL2-KatRE";
 $moviedescription = "Gefeliciteerd met het bereiken van level 0 \"Een filmbezoeker\" in python programmeren. Een goed begin is het halve werk!

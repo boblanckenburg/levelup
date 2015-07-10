@@ -1,7 +1,5 @@
 <?php
 
-    include 'levelcalculations.php';
-
     //disgusting helper function because php lacks a reverse parse_url function
     function join_url( $parts, $encode=TRUE )
     {
@@ -130,15 +128,20 @@
         $class = mysql_real_escape_string( $_GET['class'] );
         
         $student_rows = "";
-        $student_query = mysql_query('SELECT DISTINCT(name), inactive FROM students WHERE class REGEXP "[' . $class . ']" ORDER BY name ASC');
+        $student_query = mysql_query('SELECT DISTINCT(name), nickname, inactive FROM students WHERE class REGEXP "[' . $class . ']" ORDER BY name ASC');
         while( $student_query_row = mysql_fetch_assoc( $student_query ) )
         {
             $student_name = $student_query_row['name'];
+            $student_nick = $student_query_row['nickname'];
             $student_inactive = $student_query_row['inactive'];
             
             $student_rows .= "<tr><td>" . $student_name . "</td>";
+            $student_rows .= "<td>" . $student_nick . "</td>";
             $student_rows .= "<td>";
         
+            /*
+             *  presence input field
+             */
             //grab all presences from students and join the presences from the meta info table to get meta info coupled to each record
             $presence_query = 
             mysql_query( '
@@ -172,7 +175,10 @@
             
             $student_rows .= "</td>";
             
-            //homework input field
+            
+            /*
+             *  homework input field
+             */
             $student_rows .= "<td>";
             
             $homework_query = "SELECT grade FROM homework WHERE student_name = \"".$student_name."\" AND weeknumber = \"" . $weeknumber . "\"";
@@ -184,6 +190,7 @@
                 $homework_grade = (float)$homework_query_row['grade'];
             }
             
+            
             //generate unique textinputname from student name and weeknumber for homework
             $textinputname = "homework_".$student_name."_".$weeknumber;
             $student_rows .= "<input type='text' size='3' style='margin-top:4px'
@@ -193,6 +200,9 @@
             $student_rows .= "</td>";
 
 
+            /*
+             *  project input field
+             */
             //own project input field
             $student_rows .= "<td>";
             
@@ -214,6 +224,9 @@
             $student_rows .= "</td>";
             
             
+            /*
+             *  inactivity input field
+             */
             //generate unique checkboxname from student name for inactivity
             $student_rows .= "<td>";
             $checkboxname = "inactive_".$student_name;
@@ -225,10 +238,25 @@
             $student_rows .= "</td>";
             
             
+            $student_points = get_student_point_array( $student_name );
+            
+            /*
+             *  strikes display field
+             */
+            $student_rows .= "<td>";
+            
+            $student_rows .= "<div id='".$student_name."_strikes'>" . $student_points["streaks"] . "</div>";
+            
+            $student_rows .= "</td>";
+             
+            
+            /*
+             *  totals field
+             */
             //display total points for student
             $student_rows .= "<td>";
             
-            $student_rows .= "<div id='".$student_name."_total'>" . get_student_points( $student_name ) . "</div>";
+            $student_rows .= "<div id='".$student_name."_total'>" . $student_points["total"] . "</div>";
             
             $student_rows .= "</td>";
         }

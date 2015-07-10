@@ -1,4 +1,7 @@
 <?php
+
+include "levelcalculations.php";
+
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(1);
@@ -26,6 +29,7 @@ $titlebar_pages_array = Array(
     "Student View" => "studentview", "Teacher View" => "docentview", "Administration" => "administration"
 );
 
+//always accessible, even when the user is marked inactive
 $inactive_pages_array = Array(
     "login", "studentview"
 );
@@ -64,16 +68,41 @@ if($student_query_row = mysql_fetch_assoc($student_query))
     
     $current_date = date("Y-m-d G:i:s");
     $diff = (abs(strtotime($current_date) - strtotime($lastlogin)));
-    
-    $years = floor($diff / (365*60*60*24));
-    $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-    $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
-    if( $days >= 1 )
+    if( $diff > 60*60*12 && $diff <= 60*60*24 )
     {
         //strike! Push to database
         $streak_query = "INSERT INTO streak ( student_name ) VALUES( '".$name."' )";
         mysql_query( $streak_query );
+        
+        //get student's highest streak
+        $highest_streak_query = "SELECT highest_streak FROM students WHERE name = '".$name."'";
+        $highest_streak_result = mysql_query( $highest_streak_query );
+        $highest_streak_row = mysql_fetch_assoc( $highest_streak_result );
+        $highest_streak = $highest_streak_row['highest_streak'];
+        
+        //get student's current streak, plus 1
+        $streak_query = "SELECT COUNT(student_name) AS totalstreaks FROM streak WHERE student_name = '" . $name . "'";
+        $streak_result = mysql_query( $streak_query );
+        $streak_row = mysql_fetch_assoc( $streak_result );
+        $streak = $streak_row['totalstreaks'];
+        $streak += 1;
+        
+        //update with highest of the two
+        $highest_streak = max( $streak, $highest_streak );
+        
+        //update student lastlogin timestamp
+        $update_lastlogin_query = "UPDATE students SET lastlogin = '".$current_date."', highest_streak = ".$highest_streak." WHERE name = '".$name."'";
+        mysql_query( $update_lastlogin_query );
+                
+        //update points
+        update_points( $name );
+    }
+    
+    else if( $diff > 60*60*24 )
+    {
+        $reset_streak_query = "DELETE FROM streak WHERE student_name = '".$name."'";
+        mysql_query( $reset_streak_query );
         
         //update student lastlogin timestamp
         $update_lastlogin_query = "UPDATE students SET lastlogin = '".$current_date."' WHERE name = '".$name."'";

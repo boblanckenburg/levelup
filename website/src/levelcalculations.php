@@ -4,31 +4,9 @@ function update_points( $studentname )
 {
     $studentname = mysql_escape_string( $studentname );
     
-    $points_meta_query = "SELECT presence, codecademy FROM points_meta";
-    $presences_query = "SELECT COUNT(present) AS totalpresent FROM presences WHERE student_name = '" . $studentname . "' AND present = '1'";
-    $homework_query = "SELECT SUM(grade) AS totalgrade FROM homework WHERE student_name = '" . $studentname . "'";
-    $project_query = "SELECT SUM(grade) AS totalgrade FROM project WHERE student_name = '" . $studentname . "'";  
-    $codecademy_query = "SELECT grade FROM codecademy WHERE student_name = '" . $studentname . "'";  
+    $points = get_student_point_array( $studentname );
     
-    $points_meta_result = mysql_fetch_assoc( mysql_query( $points_meta_query ) );
-    $points_per_presence = $points_meta_result['presence'];
-    $points_codecademy = $points_meta_result['codecademy'];
-    
-    $presences_result = mysql_fetch_array( mysql_query( $presences_query ) );
-    $presences = $presences_result['totalpresent'];
-    
-    $homework_result = mysql_fetch_array( mysql_query( $homework_query ) );
-    $homework = $homework_result['totalgrade'];
-    
-    $project_result = mysql_fetch_array( mysql_query( $project_query ) );
-    $project = $project_result['totalgrade'];
-    
-    $codecademy_result = mysql_fetch_array( mysql_query( $codecademy_query ) );
-    $codecademy = $codecademy_result['grade'];
-    
-    $points = $presences * $points_per_presence + $homework + $project + $codecademy * $points_codecademy;
-    
-    $update_query = "UPDATE students SET points = " . $points . " WHERE name = '" . $studentname . "'";
+    $update_query = "UPDATE students SET points = " . $points["total"] . " WHERE name = '" . $studentname . "'";
     
     mysql_query( $update_query );
 }
@@ -39,6 +17,8 @@ function get_student_point_array( $studentname )
     
     $points_meta_query = "SELECT presence, codecademy FROM points_meta";
     $presences_query = "SELECT COUNT(present) AS totalpresent FROM presences WHERE student_name = '" . $studentname . "' AND present = '1'";
+    $highest_streak_query = "SELECT highest_streak FROM students WHERE name = '" . $studentname . "'";
+    $streak_query = "SELECT COUNT(student_name) AS totalstreaks FROM streak WHERE student_name = '" . $studentname . "'";
     $homework_query = "SELECT SUM(grade) AS totalgrade FROM homework WHERE student_name = '" . $studentname . "'";
     $project_query = "SELECT SUM(grade) AS totalgrade FROM project WHERE student_name = '" . $studentname . "'";  
     $codecademy_query = "SELECT grade FROM codecademy WHERE student_name = '" . $studentname . "'";  
@@ -50,6 +30,12 @@ function get_student_point_array( $studentname )
     $presences_result = mysql_fetch_array( mysql_query( $presences_query ) );
     $points['presence'] = (int)$presences_result['totalpresent'] * $points_per_presence;
     
+    $streak_result = mysql_fetch_array( mysql_query( $streak_query ) );
+    $points['streaks'] = (int)$streak_result['totalstreaks'];
+    
+    $highest_streak_result = mysql_fetch_array( mysql_query( $highest_streak_query ) );
+    $points['highest_streak'] = (int)$highest_streak_result['highest_streak'];
+    
     $homework_result = mysql_fetch_array( mysql_query( $homework_query ) );
     $points['homework'] = (int)$homework_result['totalgrade'];
     
@@ -59,7 +45,7 @@ function get_student_point_array( $studentname )
     $codecademy_result = mysql_fetch_array( mysql_query( $codecademy_query ) );
     $points['codecademy'] = (int)$codecademy_result['grade'] * $points_codecademy;
     
-    $points['total'] = (int)$points['presence'] + $points['homework'] + $points['project'] + $points['codecademy'];
+    $points['total'] = (int)$points['presence'] + $points['homework'] + $points['project'] + $points['codecademy'] + $points['highest_streak'];
     
     return $points;
 }

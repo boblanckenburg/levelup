@@ -1,7 +1,4 @@
 <?php
-
-    include "levelcalculations.php";
-    
     
     //default values
     $class = 'A';
@@ -20,7 +17,7 @@
     $class_result = mysql_query( $class_query );
     $class_row = mysql_fetch_assoc( $class_result );
     $class = $class_row['class'];
-
+    
     $point_totals = get_point_totals();
     $points = $point_totals['student'][$name];
     $level = get_level_from_points( $points );

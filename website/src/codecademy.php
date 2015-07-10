@@ -1,7 +1,5 @@
 <?php
 
-include "levelcalculations.php";
-
 $name = $_SESSION['name'];
 
 if( $_GET['submitgrade'] == 'true' )

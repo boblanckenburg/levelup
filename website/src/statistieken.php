@@ -1,7 +1,4 @@
 <?php // content="text/plain; charset=utf-8"
-
-    include "levelcalculations.php";
-    
     
     //get the logged in username and retrieve known values
     $name = mysql_escape_string( $_SESSION['name'] );
@@ -19,6 +16,7 @@
     $site = str_replace( "{homework}", $points['homework'], $site );
     $site = str_replace( "{project}", $points['project'], $site );
     $site = str_replace( "{codecademy}", $points['codecademy'], $site );
+    $site = str_replace( "{streaks}", $points['highest_streak'], $site );
     $site = str_replace( "{total}", $points['total'], $site );
 
     $levelcounters = "";
