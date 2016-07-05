@@ -117,13 +117,19 @@ function get_point_totals()
 
 function get_level_from_points( $points )
 {
+    $last_level_query = "SELECT level FROM level_meta ORDER BY level DESC LIMIT 1";
+    $last_level_result = mysql_query( $last_level_query );
+    $last_level_row = mysql_fetch_assoc($last_level_result);
+    $last_level = $last_level_row['level'];
+
     $level_query = "SELECT points, level FROM level_meta ORDER BY level ASC";
     $level_result = mysql_query( $level_query );
+    $total_levels = mysql_num_rows($result);
     
     $level = 0;
     while( $level_row = mysql_fetch_assoc( $level_result ) )
     {
-        if( $points >= $level_row['points'] ) 
+        if( $level < $last_level && $points >= $level_row['points'] ) 
         {
             $level = $level_row['level']+1;
         }
