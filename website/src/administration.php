@@ -39,6 +39,14 @@ if(isset($_POST["upload"])) {
     $site = str_replace( "{error}", "", $site );
     $site = str_replace( "{studentrows}", "", $site );
     $site = str_replace( "{importenabled}", "disabled", $site );
+    
+    $site = show_content($site, $_GET['content']);
+}
+
+function show_content($site, $content) {
+    $site = preg_replace( "({".$content."-hidden})", "", $site );
+    $site = preg_replace( "({.*?-hidden})", "hidden", $site );
+    return $site;
 }
 
 function import_students() {

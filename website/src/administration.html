@@ -1,24 +1,36 @@
-<section>
-	<h1>Administration</h1>
-	<form action="?page=administration" method="post" enctype="multipart/form-data">
-	    Import a csv file with students:<br>
-	    <input type="file" name="studentscsv" id="studentscsv">
-	    <input type="submit" value="Upload" name="upload">
-	    <input type="submit" value="Import" name="import" {importenabled}>
-	    <input type="hidden" value="{studentnumbers}" name="studentnumbers"><br>
-	    <p>{error}</p>
+
+<section class="actionbar">
+	<a href="index.php?page=administration&content=students">STUDENTEN</a>
+	<a href="index.php?page=administration&content=statistics">STATISTIEKEN</a>
+</section>
+
+<section class="center">
+	<div {students-hidden}>
+		<form action="?page=administration&content=students" method="post" enctype="multipart/form-data">
+		    Import a csv file with students:<br>
+		    <input type="file" name="studentscsv" id="studentscsv">
+		    <input type="submit" value="Upload" name="upload">
+		    <input type="submit" value="Import" name="import" {importenabled}>
+		    <input type="hidden" value="{studentnumbers}" name="studentnumbers"><br>
+		    <p>{error}</p>
+		
+		    <p>The following students are ready to be imported:</p>
+			<table>
+				<tr>
+					<td><div class=""></div></td>
+					<td><div class="">Studentnummer</div></td>
+					<td><div class="">Studentnaam</div></td>
+					<td><div class="">Klas</div></td>
+					<td><div class="">Laatst geopend</div></td>
+				</tr>
+				{studentrows}
+			</table>
+		</form>
+	</div>
 	
-	    <p>The following students are ready to be imported:</p>
-		<table>
-			<tr>
-				<td><div class=""></div></td>
-				<td><div class="">Studentnummer</div></td>
-				<td><div class="">Studentnaam</div></td>
-				<td><div class="">Klas</div></td>
-				<td><div class="">Laatst geopend</div></td>
-			</tr>
-			{studentrows}
-		</table>
-	</form>
-	
+	<div {statistics-hidden}>
+		<p>
+			Here comes student statistics.
+		</p>
+	</div>
 </section>
