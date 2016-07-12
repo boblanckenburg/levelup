@@ -20,7 +20,7 @@
     $site = str_replace( "{total}", $points['total'], $site );
 
     $levelcounters = "";
-    for( $i = 0; $i <= $level ; $i++ )
+    for( $i = 1; $i <= $level ; $i++ )
     {
         $levelcounters .= '
         <section class="levelcounter">
