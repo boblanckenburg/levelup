@@ -2,15 +2,15 @@
 
 include "CsvImporter.php";
 
-$target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["studentscsv"]["name"]);
-$uploadOk = 1;
-$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-// Check if image file is a actual image or fake image
+$site = show_content($site, $_GET['content']);
+
 if(isset($_POST["upload"])) {
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["studentscsv"]["name"]);
+    $fileType = pathinfo($target_file,PATHINFO_EXTENSION);
     $file = $_FILES["studentscsv"]["tmp_name"];
     
-    if($imageFileType != "csv") {
+    if($fileType != "csv") {
         $site = str_replace( "{error}", "Please upload a valid csv file", $site );
         $site = str_replace( "{studentrows}", "", $site );
         $site = str_replace( "{importenabled}", "disabled", $site );
@@ -25,22 +25,44 @@ if(isset($_POST["upload"])) {
         $studentnumbers = get_student_numbers($csv_data);
         $site = str_replace( "{studentnumbers}", $studentnumbers, $site );
         
-        $studentrows = create_student_rows($csv_data);
+        $studentrows = create_insert_student_rows($csv_data);
         $site = str_replace( "{studentrows}", $studentrows, $site );
     }
     
 } else if(isset($_POST["import"])) {
-   import_students();
+    import_students();
     
     $site = str_replace( "{error}", "Students imported", $site );
     $site = str_replace( "{studentrows}", "", $site );
     $site = str_replace( "{importenabled}", "disabled", $site );
+    
+} else if(isset($_POST["sqlquery"])) {
+    $query = $_POST['whereclause'];
+    $fullquery = "SELECT * FROM students WHERE " . $query;
+    $result = mysql_query($fullquery);
+    
+    $data = Array();
+    while( $row = mysql_fetch_assoc( $result ) ) {
+        $data['studentnumber'] = $row['name'];
+        $data['studentname'] = $row['nickname'];
+        $data['points'] = $row['points']; 
+        $data['lastopened'] = $row['lastlogin']; 
+        $studentrows .= create_student_row($data);
+    }
+    $data['studentnumber'] = "Studentnummer";
+    $data['studentname'] = "Studentnaam";
+    $data['points'] = "Punten";
+    $data['lastopened'] = "Laatst geopend";
+    $headerrow = create_student_row($data);
+    $site = str_replace( "{studentrows}", $headerrow . $studentrows, $site );
+    $site = str_replace( "{whereclause}", $query, $site );
+    $site = str_replace( "{error}", "", $site );
+    
 } else {
     $site = str_replace( "{error}", "", $site );
     $site = str_replace( "{studentrows}", "", $site );
     $site = str_replace( "{importenabled}", "disabled", $site );
-    
-    $site = show_content($site, $_GET['content']);
+    $site = str_replace( "{whereclause}", "", $site );
 }
 
 function show_content($site, $content) {
@@ -99,24 +121,37 @@ function get_student_numbers($csv_data) {
     return $studentnumbers;
 }
 
-function create_student_rows($csv_data) {
+function create_student_row($row) {
+    $studentrow = "<tr>";
+    foreach($row as $value) {
+        $studentrow .= "<td>" . $value . "</td>";
+    }
+    $studentrow .= "</tr>";
+    return $studentrow;
+}
+
+function create_insert_student_rows($data) {
     $studentrows = "";
-    foreach($csv_data as $row) {
-        $studentrows .= "<tr>";
+    foreach($data as $row) {
         
         $studentnumber = $row['Gebruikersnaam'];
         $studentname = $row['Voornaam'] . " " . $row['Achternaam'];
         $lastopened = $row['Laatst geopend']; 
         
-        $studentrows .= "<td><input type='checkbox' name='check-".$studentnumber."'></td>";
-        $studentrows .= "<td>" . $studentnumber . "</td>";
-        $studentrows .= "<td>" . $studentname . "<input value='".$studentname."' name='name-".$studentnumber."' type='hidden'/></td>";
-        $studentrows .= "<td><input type='text' size='4' value='Bin1A'></td>";
-        $studentrows .= "<td>" . $lastopened . "<input value='".$lastopened."' name='lastopened-".$studentnumber."' type='hidden'/></td>";
-        
-        $studentrows .= "</tr>";
+        $studentrows .= create_insert_student_row($studentnumber, $studentname, $lastopened);
     }
     return $studentrows;
+}
+
+function create_insert_student_row($studentnumber, $studentname, $lastopened) {
+        $studentrow = "<tr>";
+        $studentrow .= "<td><input type='checkbox' name='check-".$studentnumber."'></td>";
+        $studentrow .= "<td>" . $studentnumber . "</td>";
+        $studentrow .= "<td>" . $studentname . "<input value='".$studentname."' name='name-".$studentnumber."' type='hidden'/></td>";
+        $studentrow .= "<td><input type='text' size='4' value='Bin1A'></td>";
+        $studentrow .= "<td>" . $lastopened . "<input value='".$lastopened."' name='lastopened-".$studentnumber."' type='hidden'/></td>";
+        $studentrow .= "</tr>";
+        return $studentrow;
 }
 
 ?>

@@ -64,6 +64,7 @@ function get_student_points( $studentname )
 
 function get_student_next_level_points( $studentname )
 {
+    //TODO: write one query for this
     $student_points = get_student_points( $studentname );
     $next_level = get_level_from_points( $student_points ) + 1;
     $next_level_points = get_points_from_level( $next_level );
@@ -126,12 +127,12 @@ function get_level_from_points( $points )
     $level_result = mysql_query( $level_query );
     $total_levels = mysql_num_rows($result);
     
-    $level = 0;
+    $level = 1;
     while( $level_row = mysql_fetch_assoc( $level_result ) )
     {
         if( $level < $last_level && $points >= $level_row['points'] ) 
         {
-            $level = $level_row['level']+1;
+            $level = $level_row['level'];
         }
     }
 
