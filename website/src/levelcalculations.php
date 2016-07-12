@@ -132,7 +132,7 @@ function get_level_from_points( $points )
     {
         if( $level < $last_level && $points >= $level_row['points'] ) 
         {
-            $level = $level_row['level'];
+            $level = $level_row['level']+1;
         }
     }
 
