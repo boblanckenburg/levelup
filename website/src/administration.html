@@ -5,7 +5,7 @@
 </section>
 
 <section class="center">
-	<div {students-hidden}>
+	<div {students-hidden} class="horscroll">
 		<form action="?page=administration&content=students" method="post" enctype="multipart/form-data">
 		    Import a csv file with students:<br>
 		    <input type="file" name="studentscsv" id="studentscsv">
@@ -20,7 +20,7 @@
 				<td><div class="">Studentnummer</div></td>
 				<td><div class="">Studentnaam</div></td>
 				<td><div class="">Klas</div></td>
-				<td><div class="">Laatst geopend</div></td>
+				{weeks}
 			</tr>
 			{studentrows}
 		</table>
@@ -33,7 +33,7 @@
 			<input type="submit" name="sqlquery"/>
 		</form>
 	    <p>{error}</p>
-		<table>
+		<table class="horscroll">
 			{studentrows}
 		</table>
 	</div>

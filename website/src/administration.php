@@ -25,6 +25,9 @@ if(isset($_POST["upload"])) {
         $studentnumbers = get_student_numbers($csv_data);
         $site = str_replace( "{studentnumbers}", $studentnumbers, $site );
         
+        $studentrows = create_header_weeks($csv_data);
+        $site = str_replace( "{weeks}", $studentrows, $site );
+        
         $studentrows = create_insert_student_rows($csv_data);
         $site = str_replace( "{studentrows}", $studentrows, $site );
     }
@@ -109,7 +112,9 @@ function update_student($number, $name, $lastopened) {
 
 function process_csv($file) {
     $importer = new CsvImporter($file, true, ';');
-    return $importer->get();
+    $csv_data = $importer->get();
+    
+    return $csv_data;
 }
 
 function get_student_numbers($csv_data) {
@@ -130,26 +135,57 @@ function create_student_row($row) {
     return $studentrow;
 }
 
+function create_header_weeks($data) {
+    $header_weeks = array_keys($data[0]);
+    $header_weeks = preg_grep("/week (.*)/i", $header_weeks);
+    usort($header_weeks, 'sort_by_week');
+    $header = "";
+    foreach($header_weeks as $week) {
+        $header .= "<td>" . preg_replace("/(week \d+)(.*)/i", "$1", $week) . "</td>";
+    }
+    
+    return $header;
+}
+
+function sort_by_week($week_a, $week_b) {
+    $week_a_num = intval(preg_replace("/.*?(\d+).*/", "$1", $week_a));
+    $week_b_num = intval(preg_replace("/.*?(\d+).*/", "$1", $week_b));
+    return ($week_a_num - $week_b_num);
+}
+
 function create_insert_student_rows($data) {
     $studentrows = "";
+    
+    $header_weeks = array_keys($data[0]);
+    $header_weeks = preg_grep("/week (.*)/i", $header_weeks);
+    usort($header_weeks, 'sort_by_week');
+    
     foreach($data as $row) {
-        
         $studentnumber = $row['Gebruikersnaam'];
         $studentname = $row['Voornaam'] . " " . $row['Achternaam'];
-        $lastopened = $row['Laatst geopend']; 
         
-        $studentrows .= create_insert_student_row($studentnumber, $studentname, $lastopened);
+        $weekpoints = Array();
+        foreach($header_weeks as $week_name) {
+            $weekpoints[$week_name] = preg_replace("/.*?(\d+).*/i", "$1", $row[$week_name]);
+        }
+        
+        $studentrows .= create_insert_student_row($studentnumber, $studentname, $weekpoints);
     }
     return $studentrows;
 }
 
-function create_insert_student_row($studentnumber, $studentname, $lastopened) {
+function create_insert_student_row($studentnumber, $studentname, $weeks) {
         $studentrow = "<tr>";
         $studentrow .= "<td><input type='checkbox' name='check-".$studentnumber."'></td>";
         $studentrow .= "<td>" . $studentnumber . "</td>";
         $studentrow .= "<td>" . $studentname . "<input value='".$studentname."' name='name-".$studentnumber."' type='hidden'/></td>";
         $studentrow .= "<td><input type='text' size='4' value='Bin1A'></td>";
-        $studentrow .= "<td>" . $lastopened . "<input value='".$lastopened."' name='lastopened-".$studentnumber."' type='hidden'/></td>";
+        
+        foreach($weeks as $week) {
+            $studentrow .= "<td>" . $week . "<input value='".$week."' name='week-".$week."-".$studentnumber."' type='hidden'/></td>";
+        }
+        
+        //$studentrow .= "<td>" . $lastopened . "<input value='".$lastopened."' name='lastopened-".$studentnumber."' type='hidden'/></td>";
         $studentrow .= "</tr>";
         return $studentrow;
 }

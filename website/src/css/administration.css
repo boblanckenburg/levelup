@@ -13,6 +13,11 @@
 	padding: 20px 15px 15px 15px;
 }
 
+.horscroll
+{
+    overflow-x: scroll;
+}
+
 .actionbar {
 	width:100%;
 	height:85%;
