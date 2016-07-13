@@ -13,6 +13,7 @@ if(isset($_POST["upload"])) {
     if($fileType != "csv") {
         $site = str_replace( "{error}", "Please upload a valid csv file", $site );
         $site = str_replace( "{studentrows}", "", $site );
+        $site = str_replace( "{weeks}", "", $site );
         $site = str_replace( "{importenabled}", "disabled", $site );
         
     } else {
@@ -40,33 +41,29 @@ if(isset($_POST["upload"])) {
     $site = str_replace( "{weeks}", "", $site );
     $site = str_replace( "{importenabled}", "disabled", $site );
     
-} else if(isset($_POST["sqlquery"])) {
-    $query = $_POST['whereclause'];
-    $fullquery = "SELECT * FROM students WHERE " . $query;
-    $result = mysql_query($fullquery);
+} else if(isset($_POST["query"])) {
+    // $studentrows = create_insert_header_weeks($csv_data);
+    // $site = str_replace( "{weeks}", $studentrows, $site );
+        
+    $minpoints = $_POST["minpoints"];
+    $maxpoints = $_POST["maxpoints"];
     
-    $data = Array();
-    while( $row = mysql_fetch_assoc( $result ) ) {
-        $data['studentnumber'] = $row['name'];
-        $data['studentname'] = $row['nickname'];
-        $data['points'] = $row['points']; 
-        $data['lastopened'] = $row['lastlogin']; 
-        $studentrows .= create_stats_student_row($data);
-    }
-    $data['studentnumber'] = "Studentnummer";
-    $data['studentname'] = "Studentnaam";
-    $data['points'] = "Punten";
-    $data['lastopened'] = "Laatst geopend";
-    $headerrow = create_stats_student_row($data);
-    $site = str_replace( "{studentrows}", $headerrow . $studentrows, $site );
-    $site = str_replace( "{whereclause}", $query, $site );
+    $studentrows = create_stats_student_rows($minpoints, $maxpoints);
+    $site = str_replace( "{studentrows}", $studentrows, $site );
+
+    // $site = str_replace( "{studentrows}", $headerrow . $studentrows, $site );
+    $site = str_replace( "{minpoints}", $minpoints, $site );
+    $site = str_replace( "{maxpoints}", $maxpoints, $site );
+    $site = str_replace( "{weeks}", "", $site );
     $site = str_replace( "{error}", "", $site );
     
 } else {
     $site = str_replace( "{error}", "", $site );
     $site = str_replace( "{studentrows}", "", $site );
     $site = str_replace( "{importenabled}", "disabled", $site );
-    $site = str_replace( "{whereclause}", "", $site );
+    $site = str_replace( "{minpoints}", "", $site );
+    $site = str_replace( "{maxpoints}", "", $site );
+    $site = str_replace( "{weeks}", "", $site );
 }
 
 function show_content($site, $content) {
@@ -118,6 +115,29 @@ function get_student_numbers($csv_data) {
         $studentnumbers .= $studentnumber . ",";
     }
     return $studentnumbers;
+}
+
+function create_stats_student_rows($minpoints, $maxpoints) {
+    $fullquery = "SELECT * FROM homework
+    INNER JOIN students ON homework.student_name = students.name 
+    GROUP BY homework.student_name
+    ORDER BY students.class ASC, students.points DESC";
+
+    $result = mysql_query($fullquery);
+
+    $data = Array();
+    while( $row = mysql_fetch_assoc( $result ) ) {
+        $data['studentnumber'] = $row['name'];
+        $data['studentname'] = $row['nickname'];
+        $data['class'] = $row['class']; 
+        $data['points'] = $row['points']; 
+        $data['lastopened'] = $row['lastlogin']; 
+        if((empty($minpoints) || $data['points'] >= $minpoints) && (empty($maxpoints) || $data['points'] <= $maxpoints)) {
+            $studentrows .= create_stats_student_row($data);
+        }
+    }
+    
+    return $studentrows;
 }
 
 //create a stats student row

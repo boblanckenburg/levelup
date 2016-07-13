@@ -26,13 +26,22 @@
 		</form>
 	</div>
 	
-	<div {statistics-hidden}>
+	<div {statistics-hidden} class="horscroll">
 		<form action="?page=administration&content=statistics" method="post" enctype="multipart/form-data">
-		    Enter a query to filter students (SQL-injection prone!):<br>
-			<input type="text" name="whereclause" value="{whereclause}"/>
-			<input type="submit" name="sqlquery"/>
+		    Enter min/max points to filter students<br>
+			<input type="text" size="4" name="minpoints" value="{minpoints}"/>
+			<input type="text" size="4" name="maxpoints" value="{maxpoints}"/>
+			<input type="submit" name="query" value="Filter"/>
 		    <p>{error}</p>
-			<table class="horscroll">
+			<table>
+				<tr>
+					<td><div class="">Studentnummer</div></td>
+					<td><div class="">Studentnaam</div></td>
+					<td><div class="">Klas</div></td>
+					<td><div class="">Punten</div></td>
+					<td><div class="">Laatste login</div></td>
+					{weeks}
+				</tr>
 				{studentrows}
 			</table>
 		</form>
