@@ -92,7 +92,6 @@ function import_students() {
 }
 
 function update_student_homework($number, $weekpoints) {
-        
         //insert new
         foreach($weekpoints as $week => $point) {
             $query = "REPLACE INTO homework (weeknumber, grade, student_name)
@@ -227,16 +226,12 @@ function create_insert_student_row($studentnumber, $currentpoints, $weekpoints) 
         
         //assign default values when variables are empty
         if(!isset($currentpoint) || $currentpoint == "" || empty($currentpoint)) {
-            $currentpoint = -1;
-        }
-        
-        if(!isset($points) || empty($points) || $points == "") {
-            $points = 0;
+            $currentpoint = 0;
         }
         
         //no change? colour differently and don´t include in the POST import
-        if(intval($points) == intval($currentpoint)) {
-            $studentrow .= "<td style='text-align: center; white-space: nowrap;'><div style='color:#888888;'>" . $points . "</div></td>";
+        if(($points == "" || !isset($points)) || (doubleval($points) == doubleval($currentpoint))) {
+            $studentrow .= "<td style='text-align: center; white-space: nowrap;'><div style='color:#888888;'>" . intval($currentpoint) . "</div></td>";
         } else {
             $studentrow .= "<td style='text-align: center; white-space: nowrap;'>" . $points . "<input value='" . $points . "' name='week-" . $weeknumber . "-" . $studentnumber . "' type='hidden'/></td>";
         }
