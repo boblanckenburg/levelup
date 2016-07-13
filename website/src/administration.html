@@ -12,18 +12,18 @@
 		    <input type="submit" value="Upload" name="upload">
 		    <input type="submit" value="Import" name="import" {importenabled}>
 		    <input type="hidden" value="{studentnumbers}" name="studentnumbers"><br>
+		    <p>{error}</p>
+			<table>
+				<tr>
+					<td><div class=""></div></td>
+					<td><div class="">Studentnummer</div></td>
+					<td><div class="">Studentnaam</div></td>
+					<td><div class="">Klas</div></td>
+					{weeks}
+				</tr>
+				{studentrows}
+			</table>
 		</form>
-	    <p>{error}</p>
-		<table>
-			<tr>
-				<td><div class=""></div></td>
-				<td><div class="">Studentnummer</div></td>
-				<td><div class="">Studentnaam</div></td>
-				<td><div class="">Klas</div></td>
-				{weeks}
-			</tr>
-			{studentrows}
-		</table>
 	</div>
 	
 	<div {statistics-hidden}>
@@ -31,10 +31,10 @@
 		    Enter a query to filter students (SQL-injection prone!):<br>
 			<input type="text" name="whereclause" value="{whereclause}"/>
 			<input type="submit" name="sqlquery"/>
+		    <p>{error}</p>
+			<table class="horscroll">
+				{studentrows}
+			</table>
 		</form>
-	    <p>{error}</p>
-		<table class="horscroll">
-			{studentrows}
-		</table>
 	</div>
 </section>
