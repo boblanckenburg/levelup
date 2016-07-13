@@ -162,30 +162,51 @@ function create_insert_student_rows($data) {
     
     foreach($data as $row) {
         $studentnumber = $row['Gebruikersnaam'];
-        $studentname = $row['Voornaam'] . " " . $row['Achternaam'];
-        
-        $weekpoints = Array();
-        foreach($header_weeks as $week_name) {
-            $weekpoints[$week_name] = preg_replace("/.*?(\d+).*/i", "$1", $row[$week_name]);
+        if(preg_match("/s\d+/i", $studentnumber)) {
+            $studentname = $row['Voornaam'] . " " . $row['Achternaam'];
+            
+            $query = "SELECT weeknumber, grade FROM homework WHERE student_name = '" . $studentnumber . "'";
+            $result = mysql_query($query);
+            while( $currentpoints_row = mysql_fetch_assoc( $result ) ) {
+                $currentpoints[$currentpoints_row["weeknumber"]] = $currentpoints_row["grade"]; 
+            }
+            
+            foreach($header_weeks as $week_name) {
+                $week_name_short = preg_replace("/(.*?\d+).*/i", "$1", $week_name);
+                $weekpoints[$week_name_short] = preg_replace("/.*?(\d+).*/i", "$1", $row[$week_name]);
+            }
+            
+            $studentrows .= create_insert_student_row($studentnumber, $studentname, $currentpoints, $weekpoints);
         }
-        
-        $studentrows .= create_insert_student_row($studentnumber, $studentname, $weekpoints);
     }
     return $studentrows;
 }
 
-function create_insert_student_row($studentnumber, $studentname, $weeks) {
+function create_insert_student_row($studentnumber, $studentname, $currentpoints, $weekpoints) {
         $studentrow = "<tr>";
         $studentrow .= "<td><input type='checkbox' name='check-".$studentnumber."'></td>";
         $studentrow .= "<td>" . $studentnumber . "</td>";
         $studentrow .= "<td>" . $studentname . "<input value='".$studentname."' name='name-".$studentnumber."' type='hidden'/></td>";
         $studentrow .= "<td><input type='text' size='4' value='Bin1A'></td>";
         
-        foreach($weeks as $week) {
-            $studentrow .= "<td>" . $week . "<input value='".$week."' name='week-".$week."-".$studentnumber."' type='hidden'/></td>";
+        foreach($weekpoints as $weekname => $points) {
+            //no change? colour differently
+            $currentpoint = $currentpoints[preg_replace("/.*?(\d+).*/i", "$1", $weekname)];
+            if(!isset($currentpoint) || $currentpoint == "" || empty($currentpoint)) {
+                $currentpoint = 0;
+            }
+            
+            if(!isset($points) || empty($points) || $points == "") {
+                $points = 0;
+            }
+            
+            if(intval($points) == intval($currentpoints[preg_replace("/.*?(\d+).*/i", "$1", $weekname)])) {
+                $studentrow .= "<td><div style='color:#888888;'>" . $points . "</div><input value='".$points."' name='week-".$weekname."-".$studentnumber."' type='hidden'/></td>";
+            } else {
+                $studentrow .= "<td>" . $points . "<input value='".$points."' name='week-".$weekname."-".$studentnumber."' type='hidden'/></td>";
+            }
         }
         
-        //$studentrow .= "<td>" . $lastopened . "<input value='".$lastopened."' name='lastopened-".$studentnumber."' type='hidden'/></td>";
         $studentrow .= "</tr>";
         return $studentrow;
 }
