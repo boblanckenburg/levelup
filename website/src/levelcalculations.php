@@ -19,7 +19,7 @@ function update_points( $studentname )
     $last_history = mysql_fetch_array($result);
     
     if(count($last_history) > 1) {
-        $update_query = "UPDATE points_history SET points=" . $points["total"] . ", date=NOW() WHERE student_name='" . $studentname . "'";    
+        $update_query = "UPDATE points_history SET points=" . $points["total"] . " WHERE student_name='" . $studentname . "'";    
     } else {
         $update_query = "INSERT INTO points_history (student_name, points, date) VALUES('" . $studentname . "', " . $points["total"] . ", NOW())";
     }
