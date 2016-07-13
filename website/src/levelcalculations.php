@@ -6,8 +6,23 @@ function update_points( $studentname )
     
     $points = get_student_point_array( $studentname );
     
+    //update student table
     $update_query = "UPDATE students SET points = " . $points["total"] . " WHERE name = '" . $studentname . "'";
+    mysql_query( $update_query );
     
+    //update points history
+    //if last update was fewer than a day ago, overwrite that entry
+    //otherwise, insert new entry
+    $result = mysql_query("SELECT * FROM points_history 
+        WHERE student_name = \"" . $studentname . "\" 
+            AND (SEC_TO_TIME(TIMESTAMPDIFF(DAY,points_history.date,NOW()))) < 1");
+    $last_history = mysql_fetch_array($result);
+    
+    if(count($last_history) > 1) {
+        $update_query = "UPDATE points_history SET points=" . $points["total"] . ", date=NOW() WHERE student_name='" . $studentname . "'";    
+    } else {
+        $update_query = "INSERT INTO points_history (student_name, points, date) VALUES('" . $studentname . "', " . $points["total"] . ", NOW())";
+    }
     mysql_query( $update_query );
 }
 
