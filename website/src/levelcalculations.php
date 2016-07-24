@@ -13,16 +13,18 @@ function update_points( $studentname )
     //update points history
     //if last update was fewer than a day ago, overwrite that entry
     //otherwise, insert new entry
-    $result = mysql_query("SELECT * FROM points_history 
+    $timecheck_query = "SELECT * FROM points_history 
         WHERE student_name = \"" . $studentname . "\" 
-            AND (SEC_TO_TIME(TIMESTAMPDIFF(DAY,points_history.date,NOW()))) < 1");
+            AND (SEC_TO_TIME(TIMESTAMPDIFF(DAY,points_history.date,NOW()))) < 1";
+    $result = mysql_query($timecheck_query);
     $last_history = mysql_fetch_array($result);
     
     if(count($last_history) > 1) {
-        $update_query = "UPDATE points_history SET points=" . $points["total"] . " WHERE student_name='" . $studentname . "'";    
+        $update_query = "UPDATE points_history SET points=" . $points["total"] . " WHERE student_name='" . $last_history['student_name'] . "' AND date='" . $last_history['date'] . "'";    
     } else {
         $update_query = "INSERT INTO points_history (student_name, points, date) VALUES('" . $studentname . "', " . $points["total"] . ", NOW())";
     }
+    echo $update_query;
     mysql_query( $update_query );
 }
 

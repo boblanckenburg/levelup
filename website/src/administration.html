@@ -1,6 +1,6 @@
 
 <section class="actionbar">
-	<a href="index.php?page=administration&content=students">STUDENTEN</a>
+	<a href="index.php?page=administration&content=students">HUISWERK</a>
 	<a href="index.php?page=administration&content=statistics">STATISTIEKEN</a>
 </section>
 
@@ -28,9 +28,12 @@
 	
 	<div {statistics-hidden} class="horscroll">
 		<form action="?page=administration&content=statistics" method="post" enctype="multipart/form-data">
-		    Enter min/max points to filter students<br>
+		    Min/max points
 			<input type="text" size="4" name="minpoints" value="{minpoints}"/>
 			<input type="text" size="4" name="maxpoints" value="{maxpoints}"/>
+		    &nbsp;&nbsp;&nbsp;&nbsp;</tab>Min/max delta
+			<input type="text" size="4" name="mindelta" value="{mindelta}"/>
+			<input type="text" size="4" name="maxdelta" value="{maxdelta}"/>
 			<input type="submit" name="query" value="Filter"/>
 		    <p>{error}</p>
 			<table>
