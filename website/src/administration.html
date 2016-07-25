@@ -28,13 +28,21 @@
 	
 	<div {statistics-hidden} class="horscroll">
 		<form action="?page=administration&content=statistics" method="post" enctype="multipart/form-data">
-		    Min/max points
-			<input type="text" size="4" name="minpoints" value="{minpoints}"/>
-			<input type="text" size="4" name="maxpoints" value="{maxpoints}"/>
-		    &nbsp;&nbsp;&nbsp;&nbsp;</tab>Min/max delta
-			<input type="text" size="4" name="mindelta" value="{mindelta}"/>
-			<input type="text" size="4" name="maxdelta" value="{maxdelta}"/>
-			<input type="submit" name="query" value="Filter"/>
+		    <table>
+		    	<tr><td><h2>Filters</h2></td></tr>
+		    	<tr>
+		    		<td>Min/max punten</td>
+					<td><input type="text" size="4" name="minpoints" value="{minpoints}"/></td>
+					<td><input type="text" size="4" name="maxpoints" value="{maxpoints}"/></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Min/max stijging (laatste 7 dagen)</td>
+		    		<td><input type="text" size="4" name="mindelta" value="{mindelta}"/></td>
+		    		<td><input type="text" size="4" name="maxdelta" value="{maxdelta}"/></td>
+		    	</tr>
+				<tr><td><input type="submit" name="query" value="Filter"/></td></tr>
+			</table>
+	    	<tr><td><h2>Results</h2></td></tr>
 		    <p>{error}</p>
 			<table>
 				<tr>
@@ -43,6 +51,7 @@
 					<td><div class="">Klas</div></td>
 					<td><div class="">Punten</div></td>
 					<td><div class="">Laatste login</div></td>
+					<td><div class="">Stijging (laatste 7 dagen)</div></td>
 					{weeks}
 				</tr>
 				{studentrows}

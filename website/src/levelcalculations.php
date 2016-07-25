@@ -15,7 +15,7 @@ function update_points( $studentname )
     //otherwise, insert new entry
     $timecheck_query = "SELECT * FROM points_history 
         WHERE student_name = \"" . $studentname . "\" 
-            AND (SEC_TO_TIME(TIMESTAMPDIFF(DAY,points_history.date,NOW()))) < 1";
+            AND (TIMESTAMPDIFF(DAY,points_history.date,NOW())) < 1";
     $result = mysql_query($timecheck_query);
     $last_history = mysql_fetch_array($result);
     

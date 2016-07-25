@@ -47,13 +47,18 @@ if(isset($_POST["upload"])) {
         
     $minpoints = $_POST["minpoints"];
     $maxpoints = $_POST["maxpoints"];
+        
+    $mindelta = $_POST["mindelta"];
+    $maxdelta = $_POST["maxdelta"];
     
-    $studentrows = create_stats_student_rows($minpoints, $maxpoints);
+    $studentrows = create_stats_student_rows($minpoints, $maxpoints, $mindelta, $maxdelta);
     $site = str_replace( "{studentrows}", $studentrows, $site );
 
     // $site = str_replace( "{studentrows}", $headerrow . $studentrows, $site );
     $site = str_replace( "{minpoints}", $minpoints, $site );
     $site = str_replace( "{maxpoints}", $maxpoints, $site );
+    $site = str_replace( "{mindelta}", $mindelta, $site );
+    $site = str_replace( "{maxdelta}", $maxdelta, $site );
     $site = str_replace( "{weeks}", "", $site );
     $site = str_replace( "{error}", "", $site );
     
@@ -63,6 +68,8 @@ if(isset($_POST["upload"])) {
     $site = str_replace( "{importenabled}", "disabled", $site );
     $site = str_replace( "{minpoints}", "", $site );
     $site = str_replace( "{maxpoints}", "", $site );
+    $site = str_replace( "{mindelta}", "", $site );
+    $site = str_replace( "{maxdelta}", "", $site );
     $site = str_replace( "{weeks}", "", $site );
 }
 
@@ -116,22 +123,52 @@ function get_student_numbers($csv_data) {
     return $studentnumbers;
 }
 
-function create_stats_student_rows($minpoints, $maxpoints) {
-    $fullquery = "SELECT * FROM homework
-    INNER JOIN students ON homework.student_name = students.name 
-    GROUP BY homework.student_name
-    ORDER BY students.class ASC, students.points DESC";
-
-    $result = mysql_query($fullquery);
-
+function create_stats_student_rows($minpoints, $maxpoints, $mindelta, $maxdelta) {
+    $studentrows = "";
     $data = Array();
-    while( $row = mysql_fetch_assoc( $result ) ) {
+    $current_time = new DateTime($value['date']);
+    
+    $fullquery = "SELECT students.name, students.nickname, students.class, students.points, students.lastlogin
+                    FROM students
+                    GROUP BY students.name
+                    ORDER BY students.class ASC, students.points DESC";
+    $fullresult = mysql_query($fullquery);
+
+    while( $row = mysql_fetch_assoc( $fullresult ) ) {
         $data['studentnumber'] = $row['name'];
         $data['studentname'] = $row['nickname'];
         $data['class'] = $row['class']; 
         $data['points'] = $row['points']; 
         $data['lastopened'] = $row['lastlogin']; 
-        if((empty($minpoints) || $data['points'] >= $minpoints) && (empty($maxpoints) || $data['points'] <= $maxpoints)) {
+        
+        //calculate history delta
+        $deltaquery = "SELECT points, date FROM points_history 
+                        WHERE student_name = '" . $data['studentnumber'] . "'
+                        ORDER BY 'date' ASC";
+        $deltaresult = mysql_query($deltaquery);
+        $history = Array();
+        while( $row = mysql_fetch_assoc( $deltaresult ) ) {
+            array_push($history, $row);
+        }
+        
+        $old_points = 0;
+        $delta = 0;
+        $last_points = 0;
+        foreach( $history as $key => $value ) {
+            $date = new DateTime($value['date']);
+            $daydiff = $current_time->diff($date)->days;
+            if($daydiff >= 7) {
+                $old_points = $value['points'];
+            } else {
+                $last_points = $value['points'];
+            }
+        }
+        $data['delta'] = max(0, $last_points - $old_points);
+        
+        if((empty($minpoints) || $data['points'] >= $minpoints) && 
+           (empty($maxpoints) || $data['points'] <= $maxpoints) &&
+           (empty($mindelta) || $data['delta'] >= $mindelta) && 
+           (empty($maxdelta) || $data['delta'] <= $maxdelta)) {
             $studentrows .= create_stats_student_row($data);
         }
     }
