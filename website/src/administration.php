@@ -5,6 +5,19 @@ include "CsvImporter.php";
 $site = show_content($site, $_GET['content']);
 
 if(isset($_POST["upload"])) {
+    $site = show_upload($site);
+    
+} else if(isset($_POST["import"])) {
+    import_students();
+    $site = show_import($site);
+    
+} else if(isset($_POST["query"])) {
+    $site = show_stats_from_query($site);
+} else {
+    $site = show_empty_page($site);
+}
+
+function show_upload($site) {
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["studentscsv"]["name"]);
     $fileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -33,36 +46,18 @@ if(isset($_POST["upload"])) {
         $site = str_replace( "{studentrows}", $studentrows, $site );
     }
     
-} else if(isset($_POST["import"])) {
-    import_students();
-    
+    return $site;
+}
+
+function show_import($site) {   
     $site = str_replace( "{error}", "Students imported", $site );
     $site = str_replace( "{studentrows}", "", $site );
     $site = str_replace( "{weeks}", "", $site );
     $site = str_replace( "{importenabled}", "disabled", $site );
-    
-} else if(isset($_POST["query"])) {
-    // $studentrows = create_insert_header_weeks($csv_data);
-    // $site = str_replace( "{weeks}", $studentrows, $site );
-        
-    $minpoints = $_POST["minpoints"];
-    $maxpoints = $_POST["maxpoints"];
-        
-    $mindelta = $_POST["mindelta"];
-    $maxdelta = $_POST["maxdelta"];
-    
-    $studentrows = create_stats_student_rows($minpoints, $maxpoints, $mindelta, $maxdelta);
-    $site = str_replace( "{studentrows}", $studentrows, $site );
+    return $site;
+}
 
-    // $site = str_replace( "{studentrows}", $headerrow . $studentrows, $site );
-    $site = str_replace( "{minpoints}", $minpoints, $site );
-    $site = str_replace( "{maxpoints}", $maxpoints, $site );
-    $site = str_replace( "{mindelta}", $mindelta, $site );
-    $site = str_replace( "{maxdelta}", $maxdelta, $site );
-    $site = str_replace( "{weeks}", "", $site );
-    $site = str_replace( "{error}", "", $site );
-    
-} else {
+function show_empty_page($site) {   
     $site = str_replace( "{error}", "", $site );
     $site = str_replace( "{studentrows}", "", $site );
     $site = str_replace( "{importenabled}", "disabled", $site );
@@ -70,7 +65,36 @@ if(isset($_POST["upload"])) {
     $site = str_replace( "{maxpoints}", "", $site );
     $site = str_replace( "{mindelta}", "", $site );
     $site = str_replace( "{maxdelta}", "", $site );
+    $site = str_replace( "{classes}", "", $site );
     $site = str_replace( "{weeks}", "", $site );
+    $site = str_replace( "{download_content}", "", $site);
+    return $site;
+}
+
+function show_stats_from_query($site) {
+    $minpoints = $_POST["minpoints"];
+    $maxpoints = $_POST["maxpoints"];
+        
+    $mindelta = $_POST["mindelta"];
+    $maxdelta = $_POST["maxdelta"];
+    
+    $classes = $_POST["classes"];
+    
+    $studentdata = create_stats_student_data($minpoints, $maxpoints, $mindelta, $maxdelta, $classes);
+    $studentrows = create_stats_student_rows($studentdata);
+    $studentcsv = create_stats_student_csv($studentdata);
+    
+    $site = str_replace( "{studentrows}", $studentrows, $site );
+
+    $site = str_replace( "{minpoints}", $minpoints, $site );
+    $site = str_replace( "{maxpoints}", $maxpoints, $site );
+    $site = str_replace( "{mindelta}", $mindelta, $site );
+    $site = str_replace( "{maxdelta}", $maxdelta, $site );
+    $site = str_replace( "{classes}", $classes, $site );
+    $site = str_replace( "{weeks}", "", $site );
+    $site = str_replace( "{error}", "", $site );
+    $site = str_replace( "{download_content}", rawurlencode($studentcsv), $site);
+    return $site;
 }
 
 function show_content($site, $content) {
@@ -123,8 +147,8 @@ function get_student_numbers($csv_data) {
     return $studentnumbers;
 }
 
-function create_stats_student_rows($minpoints, $maxpoints, $mindelta, $maxdelta) {
-    $studentrows = "";
+function create_stats_student_data($minpoints, $maxpoints, $mindelta, $maxdelta, $classes) {
+    $studentdata = Array();
     $data = Array();
     $current_time = new DateTime($value['date']);
     
@@ -134,55 +158,72 @@ function create_stats_student_rows($minpoints, $maxpoints, $mindelta, $maxdelta)
                     ORDER BY students.class ASC, students.points DESC";
     $fullresult = mysql_query($fullquery);
 
+    $classlist = explode(',',$classes);
     while( $row = mysql_fetch_assoc( $fullresult ) ) {
-        $data['studentnumber'] = $row['name'];
-        $data['studentname'] = $row['nickname'];
-        $data['class'] = $row['class']; 
-        $data['points'] = $row['points']; 
-        $data['lastopened'] = $row['lastlogin']; 
-        
-        //calculate history delta
-        $deltaquery = "SELECT points, date FROM points_history 
-                        WHERE student_name = '" . $data['studentnumber'] . "'
-                        ORDER BY 'date' ASC";
-        $deltaresult = mysql_query($deltaquery);
-        $history = Array();
-        while( $row = mysql_fetch_assoc( $deltaresult ) ) {
-            array_push($history, $row);
-        }
-        
-        $old_points = 0;
-        $delta = 0;
-        $last_points = 0;
-        foreach( $history as $key => $value ) {
-            $date = new DateTime($value['date']);
-            $daydiff = $current_time->diff($date)->days;
-            if($daydiff >= 7) {
-                $old_points = $value['points'];
-            } else {
-                $last_points = $value['points'];
+        if($classlist[0] == "" || in_array($row['class'], $classlist)) {
+            $data['studentnumber'] = $row['name'];
+            $data['studentname'] = $row['nickname'];
+            $data['class'] = $row['class']; 
+            $data['points'] = $row['points']; 
+            $data['lastopened'] = $row['lastlogin']; 
+            
+            //calculate history delta
+            $deltaquery = "SELECT points, date FROM points_history 
+                            WHERE student_name = '" . $data['studentnumber'] . "'
+                            ORDER BY 'date' ASC";
+            $deltaresult = mysql_query($deltaquery);
+            $history = Array();
+            while( $row = mysql_fetch_assoc( $deltaresult ) ) {
+                array_push($history, $row);
             }
-        }
-        $data['delta'] = max(0, $last_points - $old_points);
-        
-        if((empty($minpoints) || $data['points'] >= $minpoints) && 
-           (empty($maxpoints) || $data['points'] <= $maxpoints) &&
-           (empty($mindelta) || $data['delta'] >= $mindelta) && 
-           (empty($maxdelta) || $data['delta'] <= $maxdelta)) {
-            $studentrows .= create_stats_student_row($data);
+            
+            $old_points = 0;
+            $delta = 0;
+            $last_points = 0;
+            foreach( $history as $key => $value ) {
+                $date = new DateTime($value['date']);
+                $daydiff = $current_time->diff($date)->days;
+                if($daydiff >= 7) {
+                    $old_points = $value['points'];
+                } else {
+                    $last_points = $value['points'];
+                }
+            }
+            $data['delta'] = max(0, $last_points - $old_points);
+            
+            if((empty($minpoints) || $data['points'] >= $minpoints) && 
+               (empty($maxpoints) || $data['points'] <= $maxpoints) &&
+               (empty($mindelta) || $data['delta'] >= $mindelta) && 
+               (empty($maxdelta) || $data['delta'] <= $maxdelta)) {
+                   array_push($studentdata, $data);
+            }
         }
     }
     
-    return $studentrows;
+    return $studentdata;
+}
+
+function create_stats_student_csv($data) {
+    $studentrow = "Studentnummer,Studentnaam,Klas,Punten,Laatste login,Stijging (laatste 7 dagen)\n";
+    foreach($data as $row) {
+        foreach($row as $value) {
+            $studentrow .= $value . ",";
+        }
+        $studentrow .= "\n";
+    }
+    return $studentrow;
 }
 
 //create a stats student row
-function create_stats_student_row($row) {
-    $studentrow = "<tr>";
-    foreach($row as $value) {
-        $studentrow .= "<td>" . $value . "</td>";
+function create_stats_student_rows($data) {
+    $studentrow = "";
+    foreach($data as $row) {
+        $studentrow .= "<tr>";
+        foreach($row as $value) {
+            $studentrow .= "<td>" . $value . "</td>";
+        }
+        $studentrow .= "</tr>";
     }
-    $studentrow .= "</tr>";
     return $studentrow;
 }
 

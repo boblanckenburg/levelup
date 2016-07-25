@@ -27,7 +27,14 @@
 	</div>
 	
 	<div {statistics-hidden} class="horscroll">
+		
 		<form action="?page=administration&content=statistics" method="post" enctype="multipart/form-data">
+				
+			<div style="float:right">
+				<input type="hidden" name="student_stats.csv"/>
+				<a href="data:application/csv;charset=utf-8,{download_content}">Download CSV</a>
+			</div>
+		
 		    <table>
 		    	<tr><td><h2>Filters</h2></td></tr>
 		    	<tr>
@@ -40,9 +47,15 @@
 		    		<td><input type="text" size="4" name="mindelta" value="{mindelta}"/></td>
 		    		<td><input type="text" size="4" name="maxdelta" value="{maxdelta}"/></td>
 		    	</tr>
+		    	<tr>
+		    		<td>Klassen (komma gescheiden)</td>
+		    		<td colspan=2><input type="text" size="13" name="classes" value="{classes}"/></td>
+		    	</tr>
 				<tr><td><input type="submit" name="query" value="Filter"/></td></tr>
 			</table>
-	    	<tr><td><h2>Results</h2></td></tr>
+	    	<tr>
+	    		<td><h2>Results</h2></td>
+	    	</tr>
 		    <p>{error}</p>
 			<table>
 				<tr>
