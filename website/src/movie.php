@@ -28,9 +28,11 @@ while( $student_query_row = mysql_fetch_assoc( $student_result ) )
 {
     $movielink = $student_query_row['videourl'];
     $moviedescription = htmlentities( $student_query_row['description'], ENT_QUOTES, "ISO8859-1" );
+    $movietitle = htmlentities( $student_query_row['title'], ENT_QUOTES, "ISO8859-1" );
 }
 
 $site = str_replace( "{movielink}", "https://www.youtube.com/embed/" . $movielink, $site );
 $site = str_replace( "{moviedescription}", $moviedescription . " ", $site );
+$site = str_replace( "{movietitle}", $movietitle . " ", $site );
 
 ?>

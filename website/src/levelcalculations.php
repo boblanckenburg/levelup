@@ -24,7 +24,6 @@ function update_points( $studentname )
     } else {
         $update_query = "INSERT INTO points_history (student_name, points, date) VALUES('" . $studentname . "', " . $points["total"] . ", NOW())";
     }
-    echo $update_query;
     mysql_query( $update_query );
 }
 
