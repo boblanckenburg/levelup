@@ -143,12 +143,12 @@ function get_level_from_points( $points )
     $level_result = mysql_query( $level_query );
     $total_levels = mysql_num_rows($result);
     
-    $level = 1;
+    $level = 0;
     while( $level_row = mysql_fetch_assoc( $level_result ) )
     {
         if( $level < $last_level && $points >= $level_row['points'] ) 
         {
-            $level = $level_row['level']+1;
+            $level = $level_row['level'] + 1;
         }
     }
 
