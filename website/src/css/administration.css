@@ -2,9 +2,11 @@
 .center
 {
 	width:95.5%;
-	height:100%;
-	display: block;
+	height: 600px;
+	display: inline;
 	float:left;
+    overflow-x: scroll;
+	overflow-style: marquee-line;
 	
 	background-color: #454954;
 	
@@ -13,14 +15,8 @@
 	padding: 20px 15px 15px 15px;
 }
 
-.horscroll
-{
-    overflow-x: scroll;
-}
-
 .actionbar {
 	width:95.5%;
-	height:85%;
 	float:left;
 	background: #454954;
 	border-radius: 12px;

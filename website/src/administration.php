@@ -129,6 +129,8 @@ function update_student_homework($number, $weekpoints) {
                 VALUES(\"" . $week . "\", \"" . $point . "\", \"".$number."\")";
             mysql_query( $query );
         }
+        
+        update_points($number);
 }
 
 function process_csv($file) {
