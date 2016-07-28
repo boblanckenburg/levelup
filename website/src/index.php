@@ -15,7 +15,7 @@ global $database_connection;
 
 //database connection
 $database_connection = mysql_connect( "localhost:3307", "levelup", "greenmushroom" );
-mysql_select_db( "levelup_clean", $database_connection );
+mysql_select_db( "levelup", $database_connection );
 
 //array with all admin pages, not accessible to non-admin users
 $admin_pages_array = Array(
