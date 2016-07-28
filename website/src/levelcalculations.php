@@ -6,8 +6,24 @@ function update_points( $studentname )
     
     $points = get_student_point_array( $studentname );
     
+    //update student table
     $update_query = "UPDATE students SET points = " . $points["total"] . " WHERE name = '" . $studentname . "'";
+    mysql_query( $update_query );
     
+    //update points history
+    //if last update was fewer than a day ago, overwrite that entry
+    //otherwise, insert new entry
+    $timecheck_query = "SELECT * FROM points_history 
+        WHERE student_name = \"" . $studentname . "\" 
+            AND (TIMESTAMPDIFF(DAY,points_history.date,NOW())) < 1";
+    $result = mysql_query($timecheck_query);
+    $last_history = mysql_fetch_array($result);
+    
+    if(count($last_history) > 1) {
+        $update_query = "UPDATE points_history SET points=" . $points["total"] . " WHERE student_name='" . $last_history['student_name'] . "' AND date='" . $last_history['date'] . "'";    
+    } else {
+        $update_query = "INSERT INTO points_history (student_name, points, date) VALUES('" . $studentname . "', " . $points["total"] . ", NOW())";
+    }
     mysql_query( $update_query );
 }
 
@@ -64,6 +80,7 @@ function get_student_points( $studentname )
 
 function get_student_next_level_points( $studentname )
 {
+    //TODO: write one query for this
     $student_points = get_student_points( $studentname );
     $next_level = get_level_from_points( $student_points ) + 1;
     $next_level_points = get_points_from_level( $next_level );
@@ -131,7 +148,7 @@ function get_level_from_points( $points )
     {
         if( $level < $last_level && $points >= $level_row['points'] ) 
         {
-            $level = $level_row['level']+1;
+            $level = $level_row['level'] + 1;
         }
     }
 

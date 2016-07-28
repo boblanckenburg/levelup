@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 10, 2015 at 01:36 PM
--- Server version: 5.5.43-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.11
+-- Generation Time: Jul 28, 2016 at 01:09 PM
+-- Server version: 5.5.50-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `levelup`
+-- Database: `levelup_clean`
 --
 
 -- --------------------------------------------------------
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin_meta`
 --
 
-DROP TABLE IF EXISTS `admin_meta`;
 CREATE TABLE IF NOT EXISTS `admin_meta` (
   `name` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL
@@ -45,22 +44,10 @@ INSERT INTO `admin_meta` (`name`, `password`) VALUES
 -- Table structure for table `codecademy`
 --
 
-DROP TABLE IF EXISTS `codecademy`;
 CREATE TABLE IF NOT EXISTS `codecademy` (
   `student_name` varchar(50) NOT NULL,
   `grade` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `codecademy`
---
-
-INSERT INTO `codecademy` (`student_name`, `grade`) VALUES
-('blackknight', 25),
-('Jan', 100),
-('Jos', 20),
-('s004', 0),
-('s005', 100);
 
 -- --------------------------------------------------------
 
@@ -68,7 +55,6 @@ INSERT INTO `codecademy` (`student_name`, `grade`) VALUES
 -- Table structure for table `codecademy_meta`
 --
 
-DROP TABLE IF EXISTS `codecademy_meta`;
 CREATE TABLE IF NOT EXISTS `codecademy_meta` (
   `title` varchar(50) NOT NULL,
   `text` varchar(1000) NOT NULL
@@ -79,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `codecademy_meta` (
 --
 
 INSERT INTO `codecademy_meta` (`title`, `text`) VALUES
-('To Camelot!', 'On second thought, let''s not go to Camelot. It is a silly place. ');
+('Codecademy!', 'De aller- allerbeste manier om een goeie programmeur te worden, is om heel, maar dan ook heel veel te oefenen. Thuis kun je dat heel goed doen met behulp van <a href="https://www.codecademy.com/en/tracks/python"><FONT COLOR = "1E90FF "> Codecademy</FONT></a>. Op de site kun je zien hoeveel procent van de python track je al gedaan hebt. Vul dat hieronder in, dan verdien je 3 punten per procent! \r\n\r\n');
 
 -- --------------------------------------------------------
 
@@ -87,45 +73,11 @@ INSERT INTO `codecademy_meta` (`title`, `text`) VALUES
 -- Table structure for table `homework`
 --
 
-DROP TABLE IF EXISTS `homework`;
 CREATE TABLE IF NOT EXISTS `homework` (
   `student_name` varchar(50) NOT NULL,
   `weeknumber` int(11) NOT NULL,
   `grade` decimal(6,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `homework`
---
-
-INSERT INTO `homework` (`student_name`, `weeknumber`, `grade`) VALUES
-('Bas', 1, 50.000),
-('blackknight', 1, 25.000),
-('blackknight', 2, 60.000),
-('blackknight', 3, 45.000),
-('blackknight', 4, 120.000),
-('blackknight', 7, 0.000),
-('Bo', 1, 25.000),
-('Bo', 2, 0.000),
-('Bo', 3, 0.000),
-('Bo', 4, 0.000),
-('Bo', 7, 0.000),
-('Geert', 1, 50.000),
-('Geert', 2, 0.000),
-('Geert', 3, 0.000),
-('Geert', 4, 0.000),
-('Geert', 7, 0.000),
-('Jan', 1, 0.000),
-('Jan', 2, 50.000),
-('Jan', 3, 50.000),
-('Jan', 4, 0.000),
-('Jan', 7, 0.000),
-('Jos', 1, 0.000),
-('Laura', 1, 600.000),
-('Maurits', 1, 5.000),
-('Pepijn', 1, 500.000),
-('s002', 4, 7.000),
-('Timon', 1, 100.000);
 
 -- --------------------------------------------------------
 
@@ -133,7 +85,6 @@ INSERT INTO `homework` (`student_name`, `weeknumber`, `grade`) VALUES
 -- Table structure for table `homework_meta`
 --
 
-DROP TABLE IF EXISTS `homework_meta`;
 CREATE TABLE IF NOT EXISTS `homework_meta` (
   `title` varchar(100) NOT NULL,
   `text` varchar(1000) NOT NULL
@@ -144,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `homework_meta` (
 --
 
 INSERT INTO `homework_meta` (`title`, `text`) VALUES
-('Project "Thou shalt find the holy grail"', 'Arthur, King of the Britons, your Knights of the Round Table shall have a task to make them an example in these dark times.');
+('Huiswerkopgaven', 'Elke week kun je 40 punten verdienen door het huiswerk in te leveren. <a href="https://elo.hsleiden.nl/webapps/blackboard/content/listContentEditable.jsp?content_id=_660294_1&course_id=_15908_1" target="_blank">Hier vinden jullie het huiswerk</a>. \r\n<br><br>\r\nJe kunt altijd 10 punten verdienen als je je huiswerk op tijd inlevert, 30 punten voor de inhoud van het programma, en we geven ook bonuspunten voor extra goed commentaar, slimme uitbereidingen van het programma, of iets anders gaafs wat je aan je programma weet toe te voegen. <br>\r\n<br>\r\nKwam je er niet helemaal uit? Geen punt: lever altijd in wat je wel hebt, en dan kijken we samen hoe je er wel uitkomt. Van fouten leer je veel meer dan van alles in 1x goed doen. En je mag elke opdracht zo vaak inleveren als je zelf wilt.<br>\r\n<br> \r\nWas je niet op tijd? Geen probleem: late inleveraars kunnen altijd nog punten halen. Iets minder dan de mensen die op tijd waren, maar dat moet geen probleem zijn. ');
 
 -- --------------------------------------------------------
 
@@ -152,7 +103,6 @@ INSERT INTO `homework_meta` (`title`, `text`) VALUES
 -- Table structure for table `level_meta`
 --
 
-DROP TABLE IF EXISTS `level_meta`;
 CREATE TABLE IF NOT EXISTS `level_meta` (
   `level` int(11) NOT NULL,
   `title` varchar(50) NOT NULL,
@@ -166,12 +116,34 @@ CREATE TABLE IF NOT EXISTS `level_meta` (
 --
 
 INSERT INTO `level_meta` (`level`, `title`, `description`, `points`, `videourl`) VALUES
-(0, 'Movie public', 'Gefeliciteerd met het bereiken van level 0 "Een filmbezoeker" in python programmeren. Een goed begin is het halve werk!\r\n\r\nHierbij vast een teaser van de avonturen die je gaat beleven. \r\n\r\nAl enthousiast geworden? Bij op de codecademy pagina kun je alvast oefenen voor de lessen!', 40, '4FhL2-KatRE'),
-(1, 'Coconut', 'Van harte gefeliciteerd, je hebt al meer dan 50 BinPunten gescoord en level 1 van python programmeren, ''A coconut?'' bereikt!\r\n\r\nPython is vernoemd naar Monty Python, dus hierbij wat nerd-cultuur. Waar kokosnoten al niet goed voor zijn.', 76, 'rzcLQRXW6B0'),
-(2, 'Message from god', 'Een belangrijke mededeling in dit filmpje!\r\n\r\nElke programmeur heeft twee mogelijke stadia:  "I''m a god"  en "ik heb geen idee wat ik aan het doen ben". \r\nMaar je bent hard op weg richting de eerste van de twee. \r\nVan harte gefeliciteerd met het behalen van meer dan 75 BinPunten.  ', 114, 'jHsbwY4EPyA'),
-(3, 'Repressed peasant', 'Broeders! Verenigt u tegen de educatieve dictatuur en werpt uw ketenen af! Al 100 BinPunten in de pocket, je klimt al aardig op. \r\nTot de volgende les, we rekenen op opstand!', 164, 'JvKIWjnEPNY'),
-(4, 'Taunting Frenchman', 'Gefeliciteerd met het bereiken van level 4 "A Taunting Frenchman" in python programmeren.\r\n\r\nOefen je fantasievolle beledigingen maar vast voor de klas die lager staat.', 228, 'A8yjNbcKkNY'),
-(5, 'Knight of the round table', 'Een liedje om te vieren dat je al meer dan 220 BinPunten hebt behaald! ', 304, 'lfGpVcdqeS0');
+(0, 'Movie public', 'Gefeliciteerd met het bereiken van level 0 "Een filmbezoeker" in python programmeren. Een goed begin is het halve werk!\n\nHierbij vast een teaser van de avonturen die je gaat beleven. \n\nAl enthousiast geworden? Op de codecademy pagina kun je alvast oefenen voor de lessen!', 50, '4FhL2-KatRE'),
+(1, 'Coconut', 'Van harte gefeliciteerd, je hebt al meer dan 50 BinPunten gescoord en level 1 van python programmeren, ''A coconut?'' bereikt!\n\nPython is vernoemd naar Monty Python, dus hierbij wat nerd-cultuur. Waar kokosnoten al niet goed voor zijn.\n\n', 100, 'rzcLQRXW6B0'),
+(2, 'Message from god', 'Een belangrijke mededeling in dit filmpje!\n\nElke programmeur heeft twee mogelijke stadia:  "I''m a god"  en "ik heb geen idee wat ik aan het doen ben". \nMaar je bent hard op weg richting de eerste van de twee. \nVan harte gefeliciteerd met het behalen van meer dan 100 BinPunten.  ', 160, 'jHsbwY4EPyA'),
+(3, 'Repressed peasant', 'Broeders! Verenigt u tegen de educatieve dictatuur en werpt uw ketenen af! Al 160 BinPunten in de pocket, je klimt al aardig op. \nTot de volgende les, we rekenen op opstand!', 230, 'JvKIWjnEPNY'),
+(4, 'Taunting Frenchman', 'Gefeliciteerd met het bereiken van level 4 "A Taunting Frenchman" in python programmeren.\n\nOefen je fantasievolle beledigingen maar vast voor de klas die lager staat.', 300, 'A8yjNbcKkNY'),
+(5, 'Knight of the round table', 'Een liedje om te vieren dat je al meer dan 300 BinPunten hebt behaald! ', 370, 'lfGpVcdqeS0'),
+(6, 'Sir Robin', 'Een moreel appel om niet te zwichten voor gevaar; maar soms is het gewoon nodig.\nMaar voor de programmeeropdrachten lopen we natuurlijk niet weg. Kom je er niet uit? Schiet dan een docent of een studentassistent aan!\n\n', 450, 'c4SJ0xR2_bQ'),
+(7, 'Sir Galahad', 'Gefeliciteerd! Je hebt al meer dan 400 BinPunten gescoord, en dus absoluut  geen groentje meer. In dit filmpje ligt dat wel anders!\n\nEven bijgekomen van deze prikkelende beelden met een Codecademy opdrachtje?\n', 550, 'jjio-F47IfM'),
+(8, 'Swamp Castle', 'Hoera, level 8! Je hebt al meer dan 550 BinPunten verdiend. Bijna op  de helft van je werk tot de toets. Het filmpje van deze week leert ons een belangrijke les: de aanhouder wint!', 630, 'aNaXdLWt17A'),
+(9, 'Not a Witch', 'Gefeliciteerd met het bereiken van level 9 "NOT a witch" in python programmeren! Bij deze ben je niet te licht bevonden', 700, 'k3jt5ibfRzw'),
+(10, 'Knight of NI', 'Dit filmpje is in mijn opinie eigenlijk wel het raarste stukje python.\nGefeliciteerd met het behalen van level 10 python programmeren: "A Knight who says NI!" Al meer dan 700 BinPunten, je bent bijna klaar voor de toets!\n', 800, 'QTQfGd3G6dg'),
+(11, 'Black Knight', 'Gefeliciteerd met het bereiken van level 11 "THE Black Knight" in python programmeren!\nGeen foutmelding die je van je doel kan afbrengen! Het is immers maar code! Je zult winnen!\n\n', 900, 'dhRUe-gz690'),
+(12, 'Killer Rabbit', 'Gefeliciteerd met het bereiken van level 12 "The Killer Rabbit" in python programmeren!\nNu ben je echt de pythonkoning.\n', 1000, 'tgj3nZWtOfA'),
+(13, 'Not Dead', 'Opgeven? Nooit! Jij draait je toetsenbordje zelfs niet om voor de meest ingewikkelde herhaalopdracht.\nWel duizend punten in de pocket! Huzaa!', 1200, 'dGFXGwHsD_A'),
+(14, 'Bridge of Death', 'Het eindpunt! Nu moet de toets echt geen probleem meer zijn. Oh en natuurlijk niet je lievelingskleur vergeten…', 1400, 'RD02dGFXGwHsD_A'),
+(15, 'De bovengrens', '', 100000, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `points_history`
+--
+
+CREATE TABLE IF NOT EXISTS `points_history` (
+  `student_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `points` int(4) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -179,7 +151,6 @@ INSERT INTO `level_meta` (`level`, `title`, `description`, `points`, `videourl`)
 -- Table structure for table `points_meta`
 --
 
-DROP TABLE IF EXISTS `points_meta`;
 CREATE TABLE IF NOT EXISTS `points_meta` (
   `presence` int(11) NOT NULL DEFAULT '10',
   `codecademy` int(11) NOT NULL
@@ -198,120 +169,11 @@ INSERT INTO `points_meta` (`presence`, `codecademy`) VALUES
 -- Table structure for table `presences`
 --
 
-DROP TABLE IF EXISTS `presences`;
 CREATE TABLE IF NOT EXISTS `presences` (
   `date` datetime NOT NULL,
   `present` tinyint(1) NOT NULL,
   `student_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `presences`
---
-
-INSERT INTO `presences` (`date`, `present`, `student_name`) VALUES
-('2014-11-06 00:00:00', 1, 'blackknight'),
-('2014-11-06 00:00:00', 0, 's001'),
-('2014-11-06 00:00:00', 1, 's002'),
-('2014-11-06 00:00:00', 0, 's003'),
-('2014-11-06 00:00:00', 1, 's004'),
-('2014-11-06 00:00:00', 0, 's005'),
-('2014-11-06 00:00:00', 0, 's006'),
-('2014-11-06 00:00:00', 0, 's007'),
-('2014-11-06 00:00:00', 0, 's008'),
-('2014-11-06 00:00:00', 1, 's009'),
-('2014-11-06 00:00:00', 1, 's011'),
-('2014-11-06 00:00:00', 0, 's012'),
-('2014-11-06 00:00:00', 0, 's013'),
-('2014-11-06 00:00:00', 1, 's014'),
-('2014-11-06 00:00:00', 0, 's015'),
-('2014-11-06 00:00:00', 0, 's016'),
-('2014-11-11 09:30:00', 1, 'blackknight'),
-('2014-11-11 09:30:00', 1, 's002'),
-('2014-11-11 09:30:00', 0, 's003'),
-('2014-11-11 09:30:00', 1, 's004'),
-('2014-11-11 09:30:00', 0, 's005'),
-('2014-11-11 09:30:00', 0, 's006'),
-('2014-11-11 09:30:00', 0, 's007'),
-('2014-11-11 09:30:00', 0, 's008'),
-('2014-11-11 09:30:00', 1, 's009'),
-('2014-11-11 09:30:00', 1, 's011'),
-('2014-11-11 09:30:00', 1, 's014'),
-('2014-11-11 09:30:00', 0, 's015'),
-('2014-11-16 00:00:00', 1, 'blackknight'),
-('2014-11-16 00:00:00', 0, 's001'),
-('2014-11-16 00:00:00', 1, 's002'),
-('2014-11-16 00:00:00', 0, 's003'),
-('2014-11-16 00:00:00', 1, 's004'),
-('2014-11-16 00:00:00', 0, 's005'),
-('2014-11-16 00:00:00', 0, 's006'),
-('2014-11-16 00:00:00', 0, 's007'),
-('2014-11-16 00:00:00', 0, 's008'),
-('2014-11-16 00:00:00', 1, 's009'),
-('2014-11-16 00:00:00', 0, 's011'),
-('2014-11-16 00:00:00', 0, 's012'),
-('2014-11-16 00:00:00', 0, 's013'),
-('2014-11-16 00:00:00', 0, 's014'),
-('2014-11-16 00:00:00', 0, 's015'),
-('2014-11-16 00:00:00', 0, 's016'),
-('2014-11-24 00:00:00', 1, 'blackknight'),
-('2014-11-24 00:00:00', 0, 's001'),
-('2014-11-24 00:00:00', 0, 's002'),
-('2014-11-24 00:00:00', 0, 's003'),
-('2014-11-24 00:00:00', 1, 's004'),
-('2014-11-24 00:00:00', 0, 's005'),
-('2014-11-24 00:00:00', 0, 's006'),
-('2014-11-24 00:00:00', 0, 's007'),
-('2014-11-24 00:00:00', 0, 's008'),
-('2014-11-24 00:00:00', 0, 's009'),
-('2014-11-24 00:00:00', 0, 's011'),
-('2014-11-24 00:00:00', 0, 's012'),
-('2014-11-24 00:00:00', 0, 's013'),
-('2014-11-24 00:00:00', 0, 's014'),
-('2014-11-24 00:00:00', 0, 's015'),
-('2014-11-24 00:00:00', 0, 's016'),
-('2014-11-26 00:00:00', 0, 'blackknight'),
-('2014-11-26 00:00:00', 0, 's001'),
-('2014-11-26 00:00:00', 0, 's002'),
-('2014-11-26 00:00:00', 0, 's003'),
-('2014-11-26 00:00:00', 1, 's004'),
-('2014-11-26 00:00:00', 0, 's005'),
-('2014-11-26 00:00:00', 0, 's006'),
-('2014-11-26 00:00:00', 0, 's008'),
-('2014-11-26 00:00:00', 0, 's009'),
-('2014-11-26 00:00:00', 0, 's011'),
-('2014-11-26 00:00:00', 0, 's012'),
-('2014-11-26 00:00:00', 0, 's013'),
-('2014-11-26 00:00:00', 0, 's014'),
-('2014-11-26 00:00:00', 0, 's015'),
-('2014-11-26 00:00:00', 0, 's016'),
-('2015-01-01 12:00:00', 0, 'blackknight'),
-('2015-01-01 12:00:00', 0, 's002'),
-('2015-01-01 12:00:00', 0, 's003'),
-('2015-01-01 12:00:00', 1, 's004'),
-('2015-01-01 12:00:00', 0, 's005'),
-('2015-01-01 12:00:00', 0, 's007'),
-('2015-01-01 12:00:00', 0, 's009'),
-('2015-01-01 12:00:00', 0, 's012'),
-('2015-02-01 12:00:00', 0, 's001'),
-('2015-02-01 12:00:00', 0, 's002'),
-('2015-02-01 12:00:00', 0, 's003'),
-('2015-02-01 12:00:00', 1, 's004'),
-('2015-02-01 12:00:00', 0, 's005'),
-('2015-02-01 12:00:00', 0, 's006'),
-('2015-02-01 12:00:00', 0, 's007'),
-('2015-02-01 12:00:00', 0, 's008'),
-('2015-02-01 12:00:00', 0, 's009'),
-('2015-02-01 12:00:00', 0, 's011'),
-('2015-02-01 12:00:00', 0, 's012'),
-('2015-02-01 12:00:00', 0, 's013'),
-('2015-02-01 12:00:00', 0, 's014'),
-('2015-02-01 12:00:00', 0, 's015'),
-('2015-02-01 12:00:00', 0, 's016'),
-('2015-06-17 00:00:00', 0, 'blackknight'),
-('2015-06-17 00:00:00', 1, 's004'),
-('2015-06-17 00:00:00', 0, 's005'),
-('2015-06-17 00:00:00', 0, 's010');
 
 -- --------------------------------------------------------
 
@@ -319,7 +181,6 @@ INSERT INTO `presences` (`date`, `present`, `student_name`) VALUES
 -- Table structure for table `presences_meta`
 --
 
-DROP TABLE IF EXISTS `presences_meta`;
 CREATE TABLE IF NOT EXISTS `presences_meta` (
   `date` datetime NOT NULL,
   `weeknumber` int(3) NOT NULL
@@ -330,14 +191,40 @@ CREATE TABLE IF NOT EXISTS `presences_meta` (
 --
 
 INSERT INTO `presences_meta` (`date`, `weeknumber`) VALUES
-('2014-11-06 00:00:00', 1),
-('2014-11-11 09:30:00', 1),
-('2014-11-16 00:00:00', 2),
-('2014-11-24 00:00:00', 2),
-('2014-11-26 00:00:00', 3),
-('2015-01-01 12:00:00', 3),
-('2015-02-01 12:00:00', 4),
-('2015-06-17 00:00:00', 7);
+('2015-09-06 00:00:00', 1),
+('2015-09-06 09:30:00', 1),
+('2015-09-12 00:00:00', 2),
+('2015-09-12 00:00:01', 2),
+('2015-09-19 00:00:00', 3),
+('2015-09-19 00:00:01', 3),
+('2015-09-26 00:00:00', 4),
+('2015-09-26 00:00:01', 4),
+('2015-10-03 00:00:00', 5),
+('2015-10-03 00:00:01', 5),
+('2015-10-10 00:00:00', 6),
+('2015-10-10 00:00:01', 6),
+('2015-10-17 00:00:00', 7),
+('2015-10-17 00:00:01', 7),
+('2015-10-24 00:00:00', 8),
+('2015-10-24 00:00:01', 8),
+('2015-11-07 00:00:00', 10),
+('2015-11-07 00:00:01', 10),
+('2015-11-15 00:00:00', 11),
+('2015-11-15 00:00:01', 11),
+('2015-11-22 00:00:00', 12),
+('2015-11-22 00:00:01', 12),
+('2015-11-29 00:00:00', 13),
+('2015-11-29 00:00:01', 13),
+('2015-12-06 00:00:00', 14),
+('2015-12-06 00:00:01', 14),
+('2015-12-20 00:00:00', 15),
+('2015-12-20 00:00:01', 15),
+('2016-01-10 00:00:00', 16),
+('2016-01-10 00:00:01', 16),
+('2016-01-17 00:00:00', 17),
+('2016-01-17 00:00:01', 17),
+('2016-01-24 00:00:00', 18),
+('2016-01-24 00:00:01', 18);
 
 -- --------------------------------------------------------
 
@@ -345,46 +232,11 @@ INSERT INTO `presences_meta` (`date`, `weeknumber`) VALUES
 -- Table structure for table `project`
 --
 
-DROP TABLE IF EXISTS `project`;
 CREATE TABLE IF NOT EXISTS `project` (
   `student_name` varchar(50) NOT NULL,
   `weeknumber` int(11) NOT NULL,
   `grade` decimal(6,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `project`
---
-
-INSERT INTO `project` (`student_name`, `weeknumber`, `grade`) VALUES
-('Bas', 1, 0.000),
-('blackknight', 1, 3.000),
-('blackknight', 2, 10.000),
-('blackknight', 3, 0.000),
-('blackknight', 4, 0.000),
-('blackknight', 7, 0.000),
-('Bo', 1, 3.000),
-('Bo', 2, 0.000),
-('Bo', 3, 0.000),
-('Bo', 4, 0.000),
-('Bo', 7, 0.000),
-('Geert', 1, 0.000),
-('Geert', 2, 0.000),
-('Geert', 3, 0.000),
-('Geert', 4, 0.000),
-('Geert', 7, 0.000),
-('Jan', 1, 0.000),
-('Jan', 2, 50.000),
-('Jan', 3, 0.000),
-('Jan', 4, 0.000),
-('Jan', 7, 0.000),
-('Jos', 1, 0.000),
-('Laura', 1, 0.000),
-('Maurits', 1, 0.000),
-('Pepijn', 1, 200.000),
-('s002', 3, 5.000),
-('s002', 4, 0.000),
-('Timon', 1, 0.000);
 
 -- --------------------------------------------------------
 
@@ -392,7 +244,6 @@ INSERT INTO `project` (`student_name`, `weeknumber`, `grade`) VALUES
 -- Table structure for table `project_meta`
 --
 
-DROP TABLE IF EXISTS `project_meta`;
 CREATE TABLE IF NOT EXISTS `project_meta` (
   `title` varchar(100) NOT NULL,
   `text` varchar(1000) NOT NULL
@@ -403,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `project_meta` (
 --
 
 INSERT INTO `project_meta` (`title`, `text`) VALUES
-('Who would cross the Bridge of Death must answer me these questions three, ere the other side he see.', 'What... is your name?<br>\r\nWhat... is your quest?<br>\r\nWhat... is the air-speed velocity of an unladen swallow?<br>\r\n<br>\r\nAnswers to: <a href="mailto:blanckenburg.b@hsleiden.nl">Bo Blanckenburg</a>\r\n<a href="./file.zip">Download</a>');
+('Eigen project: de beste manier voor veeeel punten!', 'Uiteindelijk gaan jullie programma''s maken voor problemen die nog geen oplossing hebben. <br>\r\nDaar kun je best vlug al mee beginnen, op kleine schaal. Dus loven wij tot 300 punten uit voor een zelfbedacht programma. Maak iets nieuws, iets dat je zelf leuk vindt, en stuur het naar <a href="mailto:blanckenburg.b@hsleiden.nl">Bo Blanckenburg</a> dan kijken wij hoeveel het waard is. En als je het in je klas laat zien, dan levert dat naast <i> bragging rights </i> voor jou ook een gaaf voorbeeld voor je klasgenoten op. <br>\r\n<br>\r\n<!--In het verleden maakten studenten:  \r\n<a href="./file.zip">Download</a> <br>\r\n - een programma om bij bato de orbitals uit te rekenen <br>-->\r\n\r\n\r\n<br>\r\n<br>\r\n');
 
 -- --------------------------------------------------------
 
@@ -411,7 +262,6 @@ INSERT INTO `project_meta` (`title`, `text`) VALUES
 -- Table structure for table `streak`
 --
 
-DROP TABLE IF EXISTS `streak`;
 CREATE TABLE IF NOT EXISTS `streak` (
   `student_name` varchar(50) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -423,14 +273,13 @@ CREATE TABLE IF NOT EXISTS `streak` (
 -- Table structure for table `students`
 --
 
-DROP TABLE IF EXISTS `students`;
 CREATE TABLE IF NOT EXISTS `students` (
   `name` varchar(50) NOT NULL,
   `nickname` varchar(20) NOT NULL,
-  `points` int(4) NOT NULL,
-  `class` varchar(6) NOT NULL,
-  `lastlogin` timestamp NULL DEFAULT NULL,
-  `highest_streak` int(11) NOT NULL,
+  `points` int(4) NOT NULL DEFAULT '0',
+  `class` varchar(6) NOT NULL DEFAULT 'None',
+  `lastlogin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `highest_streak` int(11) NOT NULL DEFAULT '0',
   `password` varchar(40) NOT NULL DEFAULT 'killerbunny',
   `inactive` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -440,27 +289,7 @@ CREATE TABLE IF NOT EXISTS `students` (
 --
 
 INSERT INTO `students` (`name`, `nickname`, `points`, `class`, `lastlogin`, `highest_streak`, `password`, `inactive`) VALUES
-('blackknight', 'blackknight', 393, 'D', '2015-07-10 11:16:55', 15, 'eggbaconspam', 0),
-('s001', 'Bas', 2, 'B', '2015-07-10 10:37:32', 0, 'killerbunny', 0),
-('s002', 'Bo', 42, 'A', '0000-00-00 00:00:00', 0, 'killerbunny', 0),
-('s003', 'Geert', 1, 'A', '2015-07-09 09:13:14', 0, 'killerbunny', 0),
-('s004', 'Jan', 82, 'A', '2015-07-10 10:37:37', 0, 'killerbunny', 0),
-('s005', 'Jos', 301, 'B', '2015-07-10 10:37:18', 0, 'killerbunny', 0),
-('s006', 'Josha', 0, 'B', '0000-00-00 00:00:00', 0, 'killerbunny', 0),
-('s007', 'Karel', 0, 'B', '0000-00-00 00:00:00', 0, 'killerbunny', 0),
-('s008', 'Klaas', 0, 'B', '0000-00-00 00:00:00', 0, 'killerbunny', 0),
-('s009', 'Laura', 630, 'C', '0000-00-00 00:00:00', 0, 'killerbunny', 0),
-('s010', 'Mariska', 0, 'C', '0000-00-00 00:00:00', 0, 'killerbunny', 0),
-('s011', 'Maud', 21, 'D', '2015-07-08 17:24:20', 0, 'killerbunny', 0),
-('s012', 'Maurits', 5, 'D', '0000-00-00 00:00:00', 0, 'killerbunny', 1),
-('s013', 'Naut', 2, 'D', '2015-07-10 08:16:03', 0, 'killerbunny', 1),
-('s014', 'Pepijn', 720, 'E', '0000-00-00 00:00:00', 0, 'killerbunny', 1),
-('s015', 'Piet', 2, 'D', '2015-07-10 10:14:17', 0, 'killerbunny', 1),
-('s016', 'Timon', 100, 'F', '0000-00-00 00:00:00', 0, 'killerbunny', 0),
-('s1000000', 'Pietje Puk', 0, 'A', '0000-00-00 00:00:00', 0, 'ifierjfire', 0),
-('s10456789', 'Robbert Winkel', 1, 'bin1A', '2015-07-09 09:33:49', 0, 'killerbunny', 0),
-('s1222222', 'Peter Selie', 0, 'B', '0000-00-00 00:00:00', 0, 'cjhfkjregf', 0),
-('s1333333', 'Pinkeltje van Pinkel', 0, 'C', '0000-00-00 00:00:00', 0, 'fwjfiwff', 0);
+('blackknight', 'blackknight', 1399, 'S', '2016-07-28 10:31:03', 0, 'eggbaconspam', 1);
 
 --
 -- Indexes for dumped tables
@@ -473,16 +302,34 @@ ALTER TABLE `admin_meta`
  ADD UNIQUE KEY `name` (`name`,`password`), ADD UNIQUE KEY `name_2` (`name`,`password`);
 
 --
+-- Indexes for table `codecademy_meta`
+--
+ALTER TABLE `codecademy_meta`
+ ADD UNIQUE KEY `title` (`title`);
+
+--
 -- Indexes for table `homework`
 --
 ALTER TABLE `homework`
  ADD UNIQUE KEY `student_name` (`student_name`,`weeknumber`);
 
 --
+-- Indexes for table `homework_meta`
+--
+ALTER TABLE `homework_meta`
+ ADD UNIQUE KEY `title` (`title`);
+
+--
 -- Indexes for table `level_meta`
 --
 ALTER TABLE `level_meta`
  ADD PRIMARY KEY (`level`), ADD UNIQUE KEY `level` (`level`);
+
+--
+-- Indexes for table `points_history`
+--
+ALTER TABLE `points_history`
+ ADD UNIQUE KEY `student_name` (`student_name`,`date`);
 
 --
 -- Indexes for table `points_meta`

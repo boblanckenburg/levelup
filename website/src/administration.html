@@ -1,6 +1,6 @@
 
 <section class="actionbar">
-	<a href="index.php?page=administration&content=students">STUDENTEN</a>
+	<a href="index.php?page=administration&content=students">HUISWERK</a>
 	<a href="index.php?page=administration&content=statistics">STATISTIEKEN</a>
 </section>
 
@@ -13,15 +13,13 @@
 		    <input type="submit" value="Import" name="import" {importenabled}>
 		    <input type="hidden" value="{studentnumbers}" name="studentnumbers"><br>
 		    <p>{error}</p>
-		
-		    <p>The following students are ready to be imported:</p>
 			<table>
 				<tr>
-					<td><div class=""></div></td>
+					<td><div class=""><input type="checkbox" onClick="toggle_all(this)" checked></div></td>
 					<td><div class="">Studentnummer</div></td>
 					<td><div class="">Studentnaam</div></td>
 					<td><div class="">Klas</div></td>
-					<td><div class="">Laatst geopend</div></td>
+					{weeks}
 				</tr>
 				{studentrows}
 			</table>
@@ -29,8 +27,48 @@
 	</div>
 	
 	<div {statistics-hidden}>
-		<p>
-			Here comes student statistics.
-		</p>
+		
+		<form action="?page=administration&content=statistics" method="post" enctype="multipart/form-data">
+				
+			<div style="float:right">
+				<input type="hidden" name="student_stats.csv"/>
+				<a href="data:application/csv;charset=utf-8,{download_content}" download="student-statistics.csv">Download CSV</a>
+			</div>
+		
+		    <table>
+		    	<tr><td><h2>Filters</h2></td></tr>
+		    	<tr>
+		    		<td>Min/max punten</td>
+					<td><input type="text" size="4" name="minpoints" value="{minpoints}"/></td>
+					<td><input type="text" size="4" name="maxpoints" value="{maxpoints}"/></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Min/max stijging (laatste 7 dagen)</td>
+		    		<td><input type="text" size="4" name="mindelta" value="{mindelta}"/></td>
+		    		<td><input type="text" size="4" name="maxdelta" value="{maxdelta}"/></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Klassen (komma gescheiden)</td>
+		    		<td colspan=2><input type="text" size="13" name="classes" value="{classes}"/></td>
+		    	</tr>
+				<tr><td><input type="submit" name="query" value="Filter"/></td></tr>
+			</table>
+	    	<tr>
+	    		<td><h2>Results</h2></td>
+	    	</tr>
+		    <p>{error}</p>
+			<table>
+				<tr>
+					<td><div class="">Studentnummer</div></td>
+					<td><div class="">Studentnaam</div></td>
+					<td><div class="">Klas</div></td>
+					<td><div class="">Punten</div></td>
+					<td><div class="">Laatste login</div></td>
+					<td><div class="">Stijging (laatste 7 dagen)</div></td>
+					{weeks}
+				</tr>
+				{studentrows}
+			</table>
+		</form>
 	</div>
 </section>

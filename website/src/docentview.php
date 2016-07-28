@@ -128,7 +128,7 @@
         $class = mysql_real_escape_string( $_GET['class'] );
         
         $student_rows = "";
-        $student_query = mysql_query('SELECT DISTINCT(name), nickname, inactive FROM students WHERE class REGEXP "[' . $class . ']" ORDER BY name ASC');
+        $student_query = mysql_query('SELECT DISTINCT(name), nickname, inactive FROM students WHERE class = "' . $class . '" ORDER BY name ASC');
         while( $student_query_row = mysql_fetch_assoc( $student_query ) )
         {
             $student_name = $student_query_row['name'];
